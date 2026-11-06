@@ -1,101 +1,993 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Мій сайт</title>
-</head>
-
-<body>
-
-<h1>Привіт! Це мій сайт</h1>
-
-<p>Мене звати ...</p>
-
-<h2>Про мене</h2>
-<p>Я навчаюсь у 8 класі.</p>
-
-<h2>Мої роботи</h2>
-<p>Тут буде список моїх робіт.</p>
-
-<h2>Контакти</h2>
-<p>Email: example@gmail.com</p>
-
-</body>
-</html>
-<!DOCTYPE html>
 <html lang="uk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Моє портфоліо</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ВетеранПомічник - Офіційний додаток ЗСУ</title>
+    <!-- Leaflet Map CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Firebase SDK (v10 compat modules) -->
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
-<style>
-body {
-    margin: 0;
-    font-family: Arial, sans-serif;
-    background: #f5f7fa;
-}
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+        body {
+            background-color: #050b18;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #ffffff;
+        }
 
-header {
-    background: #4a6cf7;
-    color: white;
-    padding: 40px;
-    text-align: center;
-}
+        /* Мобільний каркас */
+        .phone-container {
+            width: 390px;
+            height: 760px;
+            background: #0f1d38;
+            border-radius: 46px;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 0 14px #1a2942;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            position: relative;
+        }
 
-section {
-    padding: 40px 20px;
-    text-align: center;
-}
+        /* Хедер */
+        .header {
+            padding: 16px 20px;
+            background: #15274d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            font-weight: 700;
+            border-bottom: 1px solid #1e3a70;
+            z-index: 10;
+        }
+        .header-icon {
+            cursor: pointer;
+            font-size: 18px;
+            position: relative;
+        }
+        .badge-dot {
+            position: absolute;
+            top: -2px;
+            right: -2px;
+            width: 8px;
+            height: 8px;
+            background: #ef4444;
+            border-radius: 50%;
+        }
 
-.card {
-    background: white;
-    padding: 20px;
-    margin: 20px auto;
-    max-width: 400px;
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+        /* Контентна частина */
+        .content {
+            padding: 16px;
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
 
-button {
-    background: #4a6cf7;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    cursor: pointer;
-}
+        .content.no-padding {
+            padding: 0;
+        }
 
-button:hover {
-    background: #3a56d4;
-}
-</style>
+        /* Пошук */
+        .search-box {
+            background: #203562;
+            padding: 10px 14px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            margin-bottom: 14px;
+            color: #ffffff;
+            font-size: 13px;
+            border: 1px solid #3b82f6;
+        }
+        .search-box input {
+            background: none;
+            border: none;
+            color: #ffffff;
+            outline: none;
+            width: 100%;
+            margin-left: 8px;
+            font-size: 13px;
+        }
+        .search-box input::placeholder {
+            color: #cbd5e1;
+        }
+
+        /* Головна сітка */
+        .grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .tile {
+            background: #1e325c;
+            padding: 16px;
+            border-radius: 16px;
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.2s, background 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+        .tile:hover { background: #274075; transform: translateY(-2px); }
+        .tile.orange { background: #dc2626; }
+        .tile.orange:hover { background: #ef4444; }
+        .tile-icon { font-size: 28px; margin-bottom: 8px; }
+        .tile-title { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
+
+        /* Картки */
+        .card {
+            background: #203562;
+            padding: 12px 16px;
+            border-radius: 14px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: background 0.2s;
+        }
+        .card:hover { background: #28427b; }
+
+        /* Нижня панель */
+        .nav-bar {
+            height: 64px;
+            background: #0b1528;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            border-top: 1px solid #1e325c;
+            z-index: 10;
+        }
+        .nav-item {
+            color: #64748b;
+            font-size: 10px;
+            cursor: pointer;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+        }
+        .nav-item.active {
+            color: #38bdf8;
+            font-weight: 700;
+        }
+        .nav-item-icon { font-size: 18px; }
+
+        /* Повноекранна мапа */
+        #full-map-container {
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+
+        /* Блоки протезування */
+        .prosthetics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+        }
+        .prosthetics-card {
+            background: #1e325c;
+            border-radius: 14px;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .prosthetics-card:hover { transform: translateY(-2px); }
+        .prosthetics-thumb {
+            width: 100%;
+            height: 95px;
+            background: #15274d;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 32px;
+            position: relative;
+        }
+        .play-btn-overlay {
+            position: absolute;
+            background: rgba(37, 99, 235, 0.9);
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        .prosthetics-info { padding: 10px; }
+        .prosthetics-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #fff; }
+        .prosthetics-rating { font-size: 10px; color: #f59e0b; }
+
+        /* Фільтри */
+        .filter-row {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 12px;
+            overflow-x: auto;
+            padding-bottom: 4px;
+        }
+        .filter-chip {
+            background: #1e325c;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 11px;
+            color: #cbd5e1;
+            cursor: pointer;
+            white-space: nowrap;
+            border: 1px solid #283e72;
+        }
+        .filter-chip.active {
+            background: #2563eb;
+            color: white;
+            border-color: #3b82f6;
+        }
+
+        /* Чат */
+        .chat-container {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            padding-right: 4px;
+            max-height: 460px;
+        }
+        .message-bubble {
+            max-width: 85%;
+            padding: 10px 14px;
+            border-radius: 14px;
+            font-size: 12px;
+            line-height: 1.4;
+        }
+        .message-bubble.incoming {
+            background: #1e325c;
+            align-self: flex-start;
+            border-bottom-left-radius: 2px;
+        }
+        .message-bubble.outgoing {
+            background: #2563eb;
+            color: white;
+            align-self: flex-end;
+            border-bottom-right-radius: 2px;
+        }
+        .message-sender { font-size: 10px; color: #38bdf8; font-weight: 700; margin-bottom: 2px; }
+        .chat-input-area {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+        .chat-input-area input {
+            flex: 1;
+            background: #15274d;
+            border: 1px solid #283e72;
+            padding: 10px 14px;
+            border-radius: 20px;
+            color: white;
+            outline: none;
+            font-size: 12px;
+        }
+        .chat-send-btn {
+            background: #2563eb;
+            border: none;
+            color: white;
+            width: 38px;
+            height: 38px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+
+        /* Google Auth Dark Theme */
+        .google-page {
+            background: #121212;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 30px 24px;
+            color: #e3e3e3;
+        }
+        .google-card-box {
+            background: #1e1e1e;
+            border: 1px solid #3c4043;
+            border-radius: 12px;
+            padding: 36px 40px;
+            max-width: 420px;
+            width: 100%;
+            margin: auto;
+            text-align: left;
+        }
+        .google-input-group {
+            position: relative;
+            margin-bottom: 24px;
+            margin-top: 20px;
+        }
+        .google-input-group input {
+            width: 100%;
+            padding: 16px;
+            background: transparent;
+            border: 1px solid #8e918f;
+            border-radius: 4px;
+            color: white;
+            font-size: 15px;
+            outline: none;
+        }
+        .google-btn-next {
+            background: #8ab4f8;
+            color: #202124;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            float: right;
+        }
+        .google-btn-next:hover { background: #aecbfa; }
+
+        .modal-overlay {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 100;
+            padding: 16px;
+        }
+        .modal-card {
+            background: #15274d;
+            border-radius: 20px;
+            width: 100%;
+            max-height: 90vh;
+            overflow-y: auto;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #283e72;
+        }
+        .btn {
+            padding: 8px 14px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 11px;
+        }
+        .btn-primary { background: #2563eb; color: white; }
+        .btn-secondary { background: #334155; color: white; }
+
+        .profile-tabs {
+            display: flex;
+            border-bottom: 1px solid #1e325c;
+            margin-bottom: 12px;
+        }
+        .profile-tab-btn {
+            flex: 1;
+            padding: 10px 0;
+            background: none;
+            border: none;
+            color: #64748b;
+            font-size: 10px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .profile-tab-btn.active {
+            color: white;
+            border-bottom: 2px solid #38bdf8;
+        }
+
+        .review-item {
+            background: #15274d;
+            border: 1px solid #283e72;
+            border-radius: 10px;
+            padding: 10px;
+            margin-bottom: 8px;
+            font-size: 11px;
+        }
+        .review-header {
+            display: flex;
+            justify-content: space-between;
+            font-weight: bold;
+            margin-bottom: 4px;
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-    <h1>Моє портфоліо</h1>
-    <p>Привіт! Я учень 8 класу 👋</p>
-</header>
+<div class="phone-container">
+    <div class="header" id="app-header">ВетеранПомічник</div>
+    <div class="content" id="app-content"></div>
 
-<section>
-    <div class="card">
-        <h2>Про мене</h2>
-        <p>Я цікавлюся програмуванням та веб-дизайном.</p>
+    <div class="nav-bar" id="app-nav" style="display: none;">
+        <div class="nav-item active" id="nav-home" onclick="openScreen('home')">
+            <span class="nav-item-icon">🏠</span><span>Головна</span>
+        </div>
+        <div class="nav-item" id="nav-doctors" onclick="openScreen('doctors')">
+            <span class="nav-item-icon">🩺</span><span>Лікарі</span>
+        </div>
+        <div class="nav-item" id="nav-prosthetics" onclick="openScreen('prosthetics')">
+            <span class="nav-item-icon">🦾</span><span>Протези</span>
+        </div>
+        <div class="nav-item" id="nav-chat" onclick="openScreen('chat')">
+            <span class="nav-item-icon">💬</span><span>Чат ЗСУ</span>
+        </div>
+        <div class="nav-item" id="nav-map" onclick="openScreen('map')">
+            <span class="nav-item-icon">📍</span><span>Мапа</span>
+        </div>
+        <div class="nav-item" id="nav-profile" onclick="openScreen('profile')">
+            <span class="nav-item-icon">👤</span><span>Профіль</span>
+        </div>
     </div>
+</div>
 
-    <div class="card">
-        <h2>Мої роботи</h2>
-        <p>Тут будуть мої проєкти.</p>
-        <button>Переглянути</button>
-    </div>
+<script>
+    // ІНІЦІАЛІЗАЦІЯ FIREBASE
+    var firebaseConfig = {
+        apiKey: "AIzaSyCj_RHDFhcasfxivujq-4YOmIIJHOl3hFI",
+        authDomain: "veteranpomichnyk.firebaseapp.com",
+        databaseURL: "https://veteranpomichnyk-default-rtdb.firebaseio.com",
+        projectId: "veteranpomichnyk",
+        storageBucket: "veteranpomichnyk.appspot.com",
+        messagingSenderId: "1016147843928",
+        appId: "1:1016147843928:web:02de7afb612832ec25232d"
+    };
+    
+    var db = null;
+    try {
+        if (typeof firebase !== 'undefined') {
+            firebase.initializeApp(firebaseConfig);
+            db = firebase.database();
+        }
+    } catch(e) {
+        console.log("Firebase init error:", e);
+    }
 
-    <div class="card">
-        <h2>Контакти</h2>
-        <p>Email: example@gmail.com</p>
-    </div>
-</section>
+    var userState = {
+        name: "Юшкевич Денис",
+        shortName: "Денисе",
+        brigade: "3 ОШБр",
+        status: "Ветеран ЗСУ",
+        phone: "+380 (99) 123-45-67",
+        email: "denys.yushkevych@gmail.com",
+        isLoggedIn: false,
+        userLat: 49.4444,
+        userLng: 32.0598
+    };
+
+    var doctorsList = [
+        { 
+            id: 1, name: "Денис Кривопишин", spec: "Керівник майстерні протезування", center: "Superhumans Center", city: "Львів, вул. Галицька 142", price: "Безкоштовно", rating: "★ 5.0", lat: 49.8397, lng: 24.0297, url: "https://superhumans.com/",
+            reviews: [
+                { author: "Андрій (47 ОМБр)", text: "Найкращий спеціаліст! Встановили біонічний протез, рука працює чудово.", rating: 5, source: "Google Maps" },
+                { author: "Олег С.", text: "Професіонали своєї справи. Дуже вдячний всій команді Superhumans!", rating: 5, source: "Google Maps" }
+            ]
+        },
+        { 
+            id: 2, name: "Назар Багнюк", spec: "Керівник напрямку протезування", center: "UNBROKEN Center", city: "Львів, вул. Миколайчука 9", price: "Безкоштовно (НСЗУ)", rating: "★ 4.9", lat: 49.8500, lng: 24.0100, url: "https://unbroken.org.ua/",
+            reviews: [
+                { author: "Сергій В.", text: "Чудовий центр реабілітації, уважні лікарі, швидка підгонка кінетичних протезів.", rating: 5, source: "Google Maps" }
+            ]
+        },
+        { 
+            id: 3, name: "Яків Градінар", spec: "Головний протезист", center: "Protez Foundation", city: "Київ / США", price: "Безкоштовно", rating: "★ 5.0", lat: 50.4501, lng: 30.5234, url: "https://protezfoundation.org/",
+            reviews: [
+                { author: "Володимир", text: "Проходив підготовку та встановлення протезу нижньої кінцівки. Все на вищому рівні!", rating: 5, source: "Google Maps" }
+            ]
+        },
+        { 
+            id: 4, name: "Вадим Керестей", spec: "Лікар-реабілітолог", center: "Клініка 'Оберіг'", city: "Київ, вул. Зоологічна 3", price: "від 1100 грн", rating: "★ 4.8", lat: 50.4600, lng: 30.4500, url: "https://oberig.ua/",
+            reviews: [
+                { author: "Дмитро П.", text: "Дуже чуйний лікар. Розробив індивідуальну програму розробки суглобів.", rating: 5, source: "Google Maps" }
+            ]
+        },
+        { 
+            id: 5, name: "Олександр Коваленко", spec: "Протезист-ортопед", center: "Orto-Sana", city: "Черкаси, вул. Шевченка 205", price: "Безкоштовно", rating: "★ 4.9", lat: 49.4444, lng: 32.0598, url: "https://www.mspu.gov.ua/",
+            reviews: [
+                { author: "Тарас (Черкаси)", text: "Зручно що в рідному місті є такі фахівці. Швидке обслуговування.", rating: 5, source: "Google Maps" }
+            ]
+        },
+        { 
+            id: 6, name: "Ірина Мельник", spec: "Фізичний терапевт", center: "Центр реабілітації ветеранів", city: "Київ, вул. Госпітальна 18", price: "Безкоштовно", rating: "★ 4.7", lat: 50.4350, lng: 30.5350, url: "https://www.kmu.gov.ua/",
+            reviews: [
+                { author: "Ігор М.", text: "Добре розробляє м'язи після тривалого знерухомлення.", rating: 4, source: "Google Maps" }
+            ]
+        }
+    ];
+
+    var videoList = [
+        { id: 1, title: "Superhumans Center: сучасне протезування", rating: "★ 5.0", icon: "🦾", query: "Superhumans Center протезування" },
+        { id: 2, title: "UNBROKEN: центр реабілітації у Львові", rating: "★ 4.9", icon: "🏥", query: "UNBROKEN Львів реабілітація" },
+        { id: 3, title: "Історії ветеранів: повернення до життя", rating: "★ 4.9", icon: "⭐️", query: "історії ветеранів протезування реабілітація" },
+        { id: 4, title: "Protez Foundation: допомога захисникам", rating: "★ 4.9", icon: "🇺🇦", query: "Protez Foundation протезування українських військових" },
+        { id: 5, title: "Фізична терапія та відновлення після поранень", rating: "★ 4.8", icon: "🏋️", query: "фізична реабілітація військових вправи" },
+        { id: 6, title: "Психологічна підтримка та адаптація захисників", rating: "★ 4.8", icon: "🧠", query: "психологічна допомога ветеранам ЗСУ" }
+    ];
+
+    function openVideoSearch(query) {
+        var encoded = encodeURIComponent(query);
+        window.open('https://www.youtube.com/results?search_query=' + encoded, '_blank');
+    }
+
+    var activeProfileTab = 'card';
+    var leafletMapInstance = null;
+    var currentFilter = 'Усі';
+    var searchQuery = '';
+
+    function renderGoogleAuthScreen() {
+        document.getElementById('app-header').style.display = 'none';
+        document.getElementById('app-nav').style.display = 'none';
+
+        var content = document.getElementById('app-content');
+        content.className = 'content';
+        content.style.padding = '0';
+        content.innerHTML = `
+            <div class="google-page">
+                <div class="google-card-box">
+                    <div style="font-size: 24px; margin-bottom: 16px;">
+                        <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
+                    </div>
+                    <div style="font-size: 24px; font-weight: 400; margin-bottom: 8px;">Увійдіть</div>
+                    <div style="font-size: 14px; color: #9aa0a6; margin-bottom: 24px;">Використовуйте свій захищений обліковий запис</div>
+
+                    <div class="google-input-group">
+                        <div style="font-size:12px; color:#8ab4f8; margin-bottom:6px;">Електронна адреса або телефон</div>
+                        <input type="text" id="google-email-input" value="denys.yushkevych@gmail.com">
+                    </div>
+
+                    <div style="font-size: 13px; color: #8ab4f8; cursor: pointer; margin-bottom: 30px;">
+                        Забули електронну адресу?
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span style="font-size: 13px; color: #8ab4f8; cursor: pointer;" onclick="showRegistrationModal()">Створити профіль</span>
+                        <button class="google-btn-next" onclick="proceedToProfileSetup()">Далі</button>
+                    </div>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; padding: 10px;">
+                    <span>Українська ▼</span>
+                    <span>Безпека · Конфіденційність · Умови</span>
+                </div>
+            </div>
+        `;
+    }
+
+    function proceedToProfileSetup() {
+        var emailVal = document.getElementById('google-email-input').value;
+        if (emailVal) userState.email = emailVal;
+        showRegistrationModal();
+    }
+
+    function showRegistrationModal() {
+        var modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.id = 'reg-modal';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <div style="font-size:16px; font-weight:bold; margin-bottom:10px;">🛡️ Реєстрація у ВетеранПомічник</div>
+                <p style="font-size:11px; color:#94a3b8; margin-bottom:14px;">Вкажіть дані для захищеного профілю:</p>
+                
+                <label style="font-size:10px; color:#94a3b8;">ПІБ:</label>
+                <input type="text" id="reg-name" style="width:100%; padding:10px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:10px; font-size:12px;" value="${userState.name}">
+
+                <label style="font-size:10px; color:#94a3b8;">Бригада / Підрозділ:</label>
+                <input type="text" id="reg-brigade" style="width:100%; padding:10px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:10px; font-size:12px;" value="${userState.brigade}">
+
+                <label style="font-size:10px; color:#94a3b8;">Телефон:</label>
+                <input type="text" id="reg-phone" style="width:100%; padding:10px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:16px; font-size:12px;" value="${userState.phone}">
+
+                <button class="btn btn-primary" style="width:100%;" onclick="finishRegistration()">Увійти в систему</button>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    function finishRegistration() {
+        var nameVal = document.getElementById('reg-name').value;
+        var brigadeVal = document.getElementById('reg-brigade').value;
+        var phoneVal = document.getElementById('reg-phone').value;
+
+        if (nameVal) {
+            userState.name = nameVal;
+            userState.shortName = nameVal.split(' ')[0];
+        }
+        if (brigadeVal) userState.brigade = brigadeVal;
+        if (phoneVal) userState.phone = phoneVal;
+        userState.status = "Ветеран ЗСУ (" + userState.brigade + ")";
+
+        var modal = document.getElementById('reg-modal');
+        if (modal) modal.remove();
+
+        userState.isLoggedIn = true;
+        document.getElementById('app-header').style.display = 'flex';
+        document.getElementById('app-nav').style.display = 'flex';
+        openScreen('home');
+    }
+
+    function resetNav() {
+        var items = document.querySelectorAll('.nav-item');
+        items.forEach(i => i.classList.remove('active'));
+    }
+
+    function openScreen(screenName) {
+        if (!userState.isLoggedIn) {
+            renderGoogleAuthScreen();
+            return;
+        }
+
+        resetNav();
+        var content = document.getElementById('app-content');
+        content.className = 'content';
+        content.style.padding = '16px';
+        var header = document.getElementById('app-header');
+
+        if (screenName === 'home') {
+            document.getElementById('nav-home').classList.add('active');
+            header.innerHTML = `<div><div style="font-size:10px; color:#94a3b8;">Вітаємо,</div><div>${userState.shortName}!</div></div><div class="header-icon" onclick="alert('Нових сповіщень немає')">🔔<div class="badge-dot"></div></div>`;
+            
+            content.innerHTML = `
+                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 14px;">Статус: Система захищена ✅</div>
+                <div class="grid">
+                    <div class="tile" onclick="openScreen('prosthetics')">
+                        <div class="tile-icon">🦾</div>
+                        <div class="tile-title">ПРОТЕЗУВАННЯ</div>
+                    </div>
+                    <div class="tile" onclick="openScreen('doctors')">
+                        <div class="tile-icon">🩺</div>
+                        <div class="tile-title">ЗАПИС ДО ЛІКАРЯ</div>
+                    </div>
+                    <div class="tile" onclick="openScreen('map')">
+                        <div class="tile-icon">📍</div>
+                        <div class="tile-title">МАПА МЕДЦЕНТРІВ</div>
+                    </div>
+                    <div class="tile orange" onclick="alert('Екстрений виклик гарячої лінії SOS 1545 активовано!')">
+                        <div class="tile-icon">📞</div>
+                        <div class="tile-title">SOS / ГАРЯЧА ЛІНІЯ</div>
+                    </div>
+                </div>
+                <div class="card" style="margin-top: 16px;" onclick="openScreen('profile')">
+                    <div>
+                        <div style="font-size: 10px; color: #94a3b8;">Наступний прийом: 14:00</div>
+                        <div style="font-size: 13px; font-weight: bold;">Реабілітолог (Superhumans)</div>
+                    </div>
+                    <div>&gt;</div>
+                </div>
+            `;
+        }
+        else if (screenName === 'doctors') {
+            document.getElementById('nav-doctors').classList.add('active');
+            header.innerHTML = '<div>Запис до Лікарів</div><div></div>';
+            renderDoctorsContent(content);
+        }
+        else if (screenName === 'prosthetics') {
+            document.getElementById('nav-prosthetics').classList.add('active');
+            header.innerHTML = '<div>Інструкції та Протези</div><div></div>';
+
+            var cardsHtml = videoList.map(v => `
+                <div class="prosthetics-card" onclick="openVideoSearch('${v.query}')">
+                    <div class="prosthetics-thumb">
+                        ${v.icon}
+                        <div class="play-btn-overlay">▶</div>
+                    </div>
+                    <div class="prosthetics-info">
+                        <div class="prosthetics-title">${v.title}</div>
+                        <div class="prosthetics-rating">Дивитись на YouTube ${v.rating}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            content.innerHTML = `
+                <div class="search-box">🔍 <input type="text" placeholder="Пошук інструкцій..." onkeyup="if(event.key==='Enter') alert('Пошуковий запит оброблено')"></div>
+                <div class="prosthetics-grid">${cardsHtml}</div>
+            `;
+        }
+        else if (screenName === 'chat') {
+            document.getElementById('nav-chat').classList.add('active');
+            header.innerHTML = '<div>Чат Ветеранів ЗСУ</div><div style="font-size:11px; color:#10b981;">● Online</div>';
+            initRealtimeChat(content);
+        }
+        else if (screenName === 'map') {
+            document.getElementById('nav-map').classList.add('active');
+            header.innerHTML = '<div>Мапа Медичних Закладів</div><div></div>';
+            content.className = 'content no-padding';
+            renderFullMapView(content);
+        }
+        else if (screenName === 'profile') {
+            document.getElementById('nav-profile').classList.add('active');
+            header.innerHTML = '<div>Мій Профіль</div><div onclick="showRegistrationModal()" style="cursor:pointer;">✏️</div>';
+
+            var tabContent = '';
+            if (activeProfileTab === 'info') {
+                tabContent = `
+                    <div class="card" style="flex-direction:column; align-items:flex-start; gap:8px; font-size:12px;">
+                        <div><b>ПІБ:</b> ${userState.name}</div>
+                        <div><b>Підрозділ:</b> ${userState.brigade}</div>
+                        <div><b>Статус:</b> ${userState.status}</div>
+                        <div><b>Телефон:</b> ${userState.phone}</div>
+                        <div><b>Google:</b> ${userState.email} (Автентифіковано ✅)</div>
+                    </div>
+                `;
+            } else if (activeProfileTab === 'card') {
+                tabContent = `
+                    <div class="card" onclick="window.open('https://superhumans.com/', '_blank')">
+                        <div><b>Запис на протезування</b><br><span style="font-size:11px; color:#38bdf8;">Superhumans Center ↗</span></div>
+                        <div>&gt;</div>
+                    </div>
+                    <div class="card" style="flex-direction:column; align-items:flex-start; margin-top:10px;">
+                        <div style="font-size:12px; font-weight:bold; margin-bottom:6px;">Призначені медикаменти</div>
+                        <div style="font-size:11px; color:#94a3b8; display:flex; justify-content:space-between; width:100%;">
+                            <span>Вітаміни B12 (Доза: 1 мл)</span><span>3 дн.</span>
+                        </div>
+                    </div>
+                `;
+            } else if (activeProfileTab === 'plan') {
+                tabContent = `
+                    <div class="card" style="flex-direction:column; align-items:flex-start; font-size:12px; gap:8px;">
+                        <b>План реабілітації на тиждень:</b>
+                        <div>1. Фізична терапія та розробка м'язів</div>
+                        <div>2. Налаштування біонічного вузла</div>
+                        <div>3. Щоденний комплекс вправ та відпочинок</div>
+                    </div>
+                `;
+            }
+
+            content.innerHTML = `
+                <div style="text-align: center; margin-bottom: 14px;">
+                    <div style="font-size: 42px;">👨‍✈️</div>
+                    <div style="font-size: 16px; font-weight: bold; margin-top: 4px;">${userState.name}</div>
+                    <div style="font-size: 12px; color: #38bdf8;">${userState.status}</div>
+                </div>
+
+                <div class="profile-tabs">
+                    <button class="profile-tab-btn ${activeProfileTab==='info'?'active':''}" onclick="activeProfileTab='info'; openScreen('profile');">ОСОБИСТІ ДАНІ</button>
+                    <button class="profile-tab-btn ${activeProfileTab==='card'?'active':''}" onclick="activeProfileTab='card'; openScreen('profile');">МЕД. КАРТКА</button>
+                    <button class="profile-tab-btn ${activeProfileTab==='plan'?'active':''}" onclick="activeProfileTab='plan'; openScreen('profile');">ПЛАН</button>
+                </div>
+                ${tabContent}
+            `;
+        }
+    }
+
+    /* ВІДГУКИ */
+    function openReviewsModal(docId) {
+        var doc = doctorsList.find(d => d.id === docId);
+        if (!doc) return;
+
+        if (db) {
+            db.ref('reviews/doc_' + docId).once('value', function(snapshot) {
+                var dbReviews = snapshot.val() || [];
+                var allReviews = (doc.reviews || []).concat(dbReviews);
+                showModalWithReviews(doc, allReviews);
+            }, function(error) {
+                showModalWithReviews(doc, doc.reviews || []);
+            });
+        } else {
+            showModalWithReviews(doc, doc.reviews || []);
+        }
+    }
+
+    function showModalWithReviews(doc, allReviews) {
+        var reviewsHtml = (allReviews.length > 0) ? allReviews.map(r => `
+            <div class="review-item">
+                <div class="review-header">
+                    <span>${r.author}</span>
+                    <span style="color:#f59e0b;">★ ${r.rating}.0 (${r.source || 'Додаток'})</span>
+                </div>
+                <div style="color:#cbd5e1;">${r.text}</div>
+            </div>
+        `).join('') : '<div style="font-size:11px; color:#94a3b8; text-align:center; margin:10px 0;">Відгуків поки немає. Будьте першим!</div>';
+
+        var modal = document.createElement('div');
+        modal.className = 'modal-overlay';
+        modal.id = 'reviews-modal';
+        modal.innerHTML = `
+            <div class="modal-card">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                    <div style="font-size:14px; font-weight:bold;">Відгуки: ${doc.name}</div>
+                    <div style="cursor:pointer; font-size:16px;" onclick="document.getElementById('reviews-modal').remove()">✖</div>
+                </div>
+
+                <div style="margin-bottom:14px;" id="modal-reviews-list">${reviewsHtml}</div>
+
+                <div style="border-top:1px solid #283e72; padding-top:10px;">
+                    <div style="font-size:12px; font-weight:bold; margin-bottom:6px;">Залишити відгук:</div>
+                    <select id="new-review-rating" style="width:100%; padding:8px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:8px; font-size:11px;">
+                        <option value="5">★ ★ ★ ★ ★ (5.0 - Відмінно)</option>
+                        <option value="4">★ ★ ★ ★ ☆ (4.0 - Добре)</option>
+                        <option value="3">★ ★ ★ ☆ ☆ (3.0 - Задовільно)</option>
+                    </select>
+                    <textarea id="new-review-text" placeholder="Напишіть ваші враження..." style="width:100%; height:60px; padding:8px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:8px; font-size:11px; outline:none; resize:none;"></textarea>
+                    <button class="btn btn-primary" style="width:100%;" onclick="addNewReviewToFirebase(${doc.id})">Опублікувати відгук</button>
+                </div>
+            </div>
+        `;
+        document.body.appendChild(modal);
+    }
+
+    function addNewReviewToFirebase(docId) {
+        var text = document.getElementById('new-review-text').value.trim();
+        var rating = parseInt(document.getElementById('new-review-rating').value);
+
+        if (!text) {
+            alert('Будь ласка, введіть текст відгуку');
+            return;
+        }
+
+        var newRev = {
+            author: userState.name + " (" + userState.brigade + ")",
+            text: text,
+            rating: rating,
+            source: "ВетеранПомічник"
+        };
+
+        if (db) {
+            var ref = db.ref('reviews/doc_' + docId);
+            ref.once('value', function(snapshot) {
+                var list = snapshot.val() || [];
+                list.push(newRev);
+                ref.set(list, function(error) {
+                    if (!error) {
+                        document.getElementById('reviews-modal').remove();
+                        alert('Дякуємо! Ваш відгук збережено у хмарі.');
+                        openReviewsModal(docId);
+                    }
+                });
+            });
+        } else {
+            alert('Збережено локально.');
+            document.getElementById('reviews-modal').remove();
+        }
+    }
+
+    function renderDoctorsContent(contentElem) {
+        var filtered = doctorsList.filter(d => {
+            var matchText = (d.name + " " + d.center + " " + d.city + " " + d.spec).toLowerCase();
+            var qMatch = matchText.includes(searchQuery.toLowerCase());
+            if (currentFilter === 'Реабілітологи') return qMatch && (d.spec.toLowerCase().includes('реабіліт') || d.spec.toLowerCase().includes('терапевт') || d.spec.toLowerCase().includes('психолог'));
+            if (currentFilter === 'Протезисти') return qMatch && (d.spec.toLowerCase().includes('протез') || d.spec.toLowerCase().includes('ортопед') || d.spec.toLowerCase().includes('інженер'));
+            return qMatch;
+        });
+
+        var docsHtml = filtered.map(d => `
+            <div class="card" style="flex-direction:column; align-items:flex-start; gap:6px;">
+                <div style="display:flex; justify-content:space-between; width:100%; font-weight:bold; font-size:13px;">
+                    <span>${d.name}</span><span style="color:#f59e0b;">${d.rating}</span>
+                </div>
+                <div style="font-size:11px; color:#38bdf8;">${d.spec}</div>
+                <div style="font-size:11px; color:#94a3b8;">🏥 ${d.center} (${d.city})</div>
+                <div style="display:flex; justify-content:space-between; width:100%; margin-top:6px; align-items:center;">
+                    <button class="btn btn-secondary" onclick="openReviewsModal(${d.id})">💬 Відгуки</button>
+                    <button class="btn btn-primary" onclick="window.open('${d.url}', '_blank')">Записатись ↗</button>
+                </div>
+            </div>
+        `).join('');
+
+        contentElem.innerHTML = `
+            <div class="search-box">🔍 <input type="text" placeholder="Введіть місто або фах..." value="${searchQuery}" oninput="searchQuery=this.value; renderDoctorsContent(document.getElementById('app-content'));"></div>
+            <div class="filter-row">
+                <div class="filter-chip ${currentFilter==='Усі'?'active':''}" onclick="currentFilter='Усі'; renderDoctorsContent(document.getElementById('app-content'));">Усі (${doctorsList.length})</div>
+                <div class="filter-chip ${currentFilter==='Реабілітологи'?'active':''}" onclick="currentFilter='Реабілітологи'; renderDoctorsContent(document.getElementById('app-content'));">Реабілітологи</div>
+                <div class="filter-chip ${currentFilter==='Протезисти'?'active':''}" onclick="currentFilter='Протезисти'; renderDoctorsContent(document.getElementById('app-content'));">Протезисти</div>
+            </div>
+            <div style="font-size:12px; font-weight:bold; margin-bottom:8px;">Доступні спеціалісти (${filtered.length}):</div>
+            ${docsHtml}
+        `;
+    }
+
+    /* ЧАТ */
+    function initRealtimeChat(contentElem) {
+        contentElem.innerHTML = `
+            <div class="chat-container">
+                <div class="chat-messages" id="chat-msgs-box">
+                    <div style="text-align:center; color:#64748b; font-size:11px; margin-top:40px;">Завантаження чату...</div>
+                </div>
+                <div class="chat-input-area">
+                    <input type="text" id="chat-input" placeholder="Напишіть повідомлення побратимам..." onkeyup="if(event.key==='Enter') sendFirebaseMessage()">
+                    <button class="chat-send-btn" onclick="sendFirebaseMessage()">➤</button>
+                </div>
+            </div>
+        `;
+
+        if (db) {
+            var chatRef = db.ref('chat_messages');
+            chatRef.on('value', function(snapshot) {
+                var data = snapshot.val();
+                var msgBox = document.getElementById('chat-msgs-box');
+                if (!msgBox) return;
+
+                if (!data) {
+                    msgBox.innerHTML = '<div style="text-align:center; color:#64748b; font-size:11px; margin-top:40px;">Чат поки порожній.<br>Напишіть перше повідомлення побратимам!</div>';
+                    return;
+                }
+
+                var msgsArray = Object.values(data);
+                var msgsHtml = msgsArray.map(m => {
+                    var isMe = (m.sender && m.sender.indexOf(userState.shortName) !== -1);
+                    return `
+                        <div class="message-bubble ${isMe ? 'outgoing' : 'incoming'}">
+                            <div class="message-sender">${m.sender || 'Побратим'}</div>
+                            <div>${m.text}</div>
+                        </div>
+                    `;
+                }).join('');
+
+                msgBox.innerHTML = msgsHtml;
+                msgBox.scrollTop = msgBox.scrollHeight;
+            });
+        }
+    }
+
+    function sendFirebaseMessage() {
+        var input = document.getElementById('chat-input');
+        if (!input || !input.value.trim()) return;
+        var text = input.value.trim();
+
+        if (db) {
+            db.ref('chat_messages').push({
+                sender: userState.name + " (" + userState.brigade + ")",
+                text: text,
+                timestamp: Date.now()
+            });
+        }
+
+        input.value = '';
+    }
+
+    /* МАПА */
+    function renderFullMapView(contentElem) {
+        contentElem.innerHTML = `<div id="full-map-container"></div>`;
+
+        setTimeout(() => {
+            if (leafletMapInstance) leafletMapInstance.remove();
+            
+            leafletMapInstance = L.map('full-map-container').setView([userState.userLat, userState.userLng], 6);
+            
+            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
+                maxZoom: 18,
+                attribution: 'Tiles &copy; Esri'
+            }).addTo(leafletMapInstance);
+
+            doctorsList.forEach(d => {
+                L.marker([d.lat, d.lng]).addTo(leafletMapInstance)
+                    .bindPopup(`
+                        <div style="font-size:12px; color:#1e293b;">
+                            <b style="font-size:13px; color:#0f172a;">${d.center}</b><br>
+                            <b>Фахівець:</b> ${d.name} (${d.spec})<br>
+                            <b>Адреса:</b> ${d.city}<br><br>
+                            <a href="${d.url}" target="_blank" style="display:inline-block; padding:4px 8px; background:#2563eb; color:white; text-decoration:none; border-radius:4px; font-weight:bold;">Записатись ↗</a>
+                        </div>
+                    `);
+            });
+        }, 100);
+    }
+
+    window.onload = function() {
+        renderGoogleAuthScreen();
+    };
+</script>
 
 </body>
 </html>
