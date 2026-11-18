@@ -1,996 +1,560 @@
-<!DOCTYPE html>
-<html lang="uk">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ВетеранПомічник - Офіційний додаток ЗСУ</title>
-    <!-- Підключення маніфесту для PWABuilder -->
-    <link rel="manifest" href="manifest.json">
+<!doctype html>
+<html lang="uk"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#10243a"><title>ВетеранПомічник</title>
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="">
+<style>
+:root{--navy:#10243a;--navy2:#1d405b;--ink:#1a2938;--muted:#667587;--bg:#f3f6f8;--card:#fff;--line:#dce4ea;--soft:#edf2f5;--yellow:#e9bd4b;--green:#287653;--red:#a83e42;--shadow:0 12px 32px #10243a12;--radius:17px} [data-theme=dark]{--navy:#0b1725;--navy2:#203c54;--ink:#e9eff5;--muted:#a6b4c1;--bg:#101a25;--card:#172534;--line:#304456;--soft:#223547;--yellow:#f0c65c;--green:#76c79f;--red:#ef9999;--shadow:0 12px 32px #0004;color-scheme:dark}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.55 system-ui,-apple-system,"Segoe UI",sans-serif}button,input,select,textarea{font:inherit}button{cursor:pointer}a{color:#3978a8;text-decoration:none}a:hover{text-decoration:underline}.app{min-height:100vh}.sidebar{position:fixed;inset:0 auto 0 0;width:254px;background:var(--navy);color:white;padding:20px 14px;overflow:auto;z-index:20;display:flex;flex-direction:column}.brand{display:flex;gap:11px;align-items:center;padding:6px 8px 20px;border-bottom:1px solid #ffffff24}.brandmark{width:42px;height:42px;background:var(--yellow);color:var(--navy);border-radius:13px;display:grid;place-items:center;font-weight:900;font-size:22px}.brand b{display:block;font-size:16px}.brand small{color:#b8c8d6}.navlabel{font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:#91a5b8;padding:18px 10px 6px;font-weight:800}.nav{display:grid;gap:3px}.nav button{border:0;border-radius:10px;padding:9px 10px;background:transparent;color:#d9e3ec;text-align:left;font-size:13px;display:flex;gap:10px;align-items:center}.nav button:hover,.nav button.active{background:#ffffff19;color:white}.nav button.active{box-shadow:inset 3px 0 var(--yellow)}.nav i{font-style:normal;width:19px;text-align:center;font-size:16px}.sidefoot{margin-top:auto;border-top:1px solid #ffffff24;padding:15px 8px 0;color:#adbdca;font-size:11px}.main{margin-left:254px;min-height:100vh}.topbar{height:68px;position:sticky;top:0;z-index:15;background:var(--card);border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 30px}.topactions{display:flex;gap:9px;align-items:center}.search{position:relative}.search input{width:min(340px,34vw);padding:9px 12px 9px 34px;border:1px solid var(--line);border-radius:11px;background:var(--bg);color:var(--ink)}.search span{position:absolute;left:12px;top:7px;color:var(--muted)}.iconbtn{border:1px solid var(--line);border-radius:11px;width:39px;height:39px;background:var(--card);color:var(--ink)}.mobilemenu{display:none}.content{max-width:1450px;margin:auto;padding:28px 30px 60px}.view{display:none;animation:fade .2s}.view.active{display:block}@keyframes fade{from{opacity:.45;transform:translateY(5px)}to{opacity:1;transform:none}}.eyebrow{text-transform:uppercase;letter-spacing:1.2px;font-size:10px;color:var(--muted);font-weight:800}h1{font-size:clamp(26px,3vw,35px);letter-spacing:-1px;line-height:1.15;margin:6px 0 8px}h2{font-size:20px;margin:0 0 14px;letter-spacing:-.4px}h3{font-size:15px;margin:0 0 6px}.lead,.muted{color:var(--muted)}.lead{margin:0;max-width:760px}.pagehead{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:22px}.btn{border:0;border-radius:10px;padding:10px 14px;font-weight:700;font-size:13px;display:inline-flex;align-items:center;justify-content:center;gap:7px}.primary{background:var(--navy2);color:white}.yellow{background:var(--yellow);color:#172536}.ghost{background:var(--card);border:1px solid var(--line);color:var(--ink)}.danger{background:#f9e8e8;color:var(--red)}.smallbtn{padding:7px 10px;font-size:12px}.hero{background:linear-gradient(115deg,#10243a,#1c405b 75%,#31566e);color:white;border-radius:23px;padding:31px;position:relative;overflow:hidden;box-shadow:var(--shadow)}.hero:after{content:"";position:absolute;width:290px;height:290px;border:1px solid #ffffff26;border-radius:50%;right:-65px;top:-145px;box-shadow:0 0 0 35px #ffffff08,0 0 0 70px #ffffff06}.hero>div{position:relative;z-index:1;max-width:760px}.hero .eyebrow{color:#c5d3df}.hero h1{font-size:clamp(28px,3.5vw,42px);color:white;margin:9px 0}.hero p{color:#dce6ed;max-width:660px}.heroactions{display:flex;gap:9px;flex-wrap:wrap}.hero .ghost{background:#ffffff15;border-color:#ffffff44;color:white}.grid{display:grid;gap:15px}.stats{grid-template-columns:repeat(4,1fr);margin:18px 0 27px}.stat,.panel,.quick,.material,.task{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 3px 12px #10243a08}.stat{padding:16px}.statlabel{font-size:12px;color:var(--muted)}.statnum{font-size:27px;font-weight:850;letter-spacing:-1px;margin-top:6px}.statnote{font-size:11px;color:var(--muted)}.twocol{grid-template-columns:minmax(0,1.35fr) minmax(260px,.8fr);align-items:start}.quickgrid{grid-template-columns:repeat(3,minmax(0,1fr))}.quick{padding:15px;display:flex;gap:12px;cursor:pointer;transition:.18s}.quick:hover,.material:hover{transform:translateY(-2px);box-shadow:var(--shadow)}.quickicon{width:41px;height:41px;display:grid;place-items:center;background:var(--soft);border-radius:12px;font-size:20px;flex:none}.quick p{font-size:12px;color:var(--muted);margin:3px 0 0}.panel{padding:19px}.panelhead{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:13px}.panelhead h2{margin:0}.notice{padding:13px 15px;border-radius:12px;background:#fff5d8;border:1px solid #e9bd4b55;font-size:12px;margin:14px 0;color:var(--ink)}[data-theme=dark] .notice{background:#3a321f}.notice strong{display:block;margin-bottom:3px}.notice.blue{background:var(--soft);border-color:var(--line)}.notice.red{background:#fae9e9}.sectiongap{margin-top:26px}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}.material{padding:16px;min-height:206px;display:flex;flex-direction:column;transition:.18s}.meta{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}.tag{font-size:10px;font-weight:800;color:var(--muted);background:var(--soft);padding:4px 8px;border-radius:20px}.material p{font-size:12px;color:var(--muted);margin:0 0 12px}.materialfoot{margin-top:auto;display:flex;align-items:center;justify-content:space-between;gap:8px}.fav{width:32px;height:32px;border:1px solid var(--line);background:var(--card);border-radius:9px;color:var(--muted)}.fav.saved{background:#fff5d8;color:#986b00}.filters{display:flex;gap:8px;flex-wrap:wrap;margin:16px 0}.field,select,textarea{border:1px solid var(--line);border-radius:10px;padding:10px 11px;background:var(--card);color:var(--ink)}.field{min-width:180px}.filters select{min-width:155px}.formgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.formfield label{display:block;font-size:12px;font-weight:700;color:var(--muted);margin-bottom:5px}.formfield input,.formfield select,.formfield textarea{width:100%}.formfield.full{grid-column:1/-1}textarea{min-height:85px;resize:vertical}.tasklist{display:grid;gap:9px}.task{padding:12px 14px;display:flex;align-items:center;gap:11px}.task input{accent-color:var(--green);width:18px;height:18px}.task.done .tasktitle{text-decoration:line-through;color:var(--muted)}.taskmain{flex:1;min-width:0}.tasktitle{font-size:13px;font-weight:750}.taskmeta{font-size:11px;color:var(--muted)}.progress{height:8px;border-radius:9px;background:var(--soft);overflow:hidden}.progress span{display:block;height:100%;background:var(--green)}.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:14px 0}.kpi{background:var(--soft);border-radius:11px;padding:11px}.kpi small{color:var(--muted)}.kpi b{display:block;font-size:18px;margin-top:3px}.table{border-collapse:collapse;width:100%;font-size:13px}.table th,.table td{padding:10px 8px;border-bottom:1px solid var(--line);text-align:left}.table th{font-size:11px;color:var(--muted)}#map{height:460px;border:1px solid var(--line);border-radius:15px;z-index:1}.maptools{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.chat{height:510px;display:flex;flex-direction:column}.chatlog{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;padding:5px 2px 14px}.bubble{max-width:87%;padding:11px 13px;background:var(--soft);border-radius:13px;font-size:13px;white-space:pre-wrap}.bubble.user{align-self:flex-end;background:var(--navy2);color:white}.chatcompose{display:flex;gap:8px;border-top:1px solid var(--line);padding-top:12px}.chatcompose input{flex:1;min-width:0}.empty{padding:28px;text-align:center;color:var(--muted);background:var(--card);border:1px dashed var(--line);border-radius:14px}.sources{display:flex;flex-wrap:wrap;gap:8px}.sources a{padding:8px 10px;border:1px solid var(--line);border-radius:9px;font-size:12px;background:var(--card)}.footer{border-top:1px solid var(--line);margin-top:32px;padding:17px 0;color:var(--muted);font-size:11px}.toastarea{position:fixed;right:18px;bottom:18px;z-index:90;display:grid;gap:8px}.toast{background:var(--navy);color:white;padding:11px 15px;border-radius:11px;box-shadow:var(--shadow);font-size:13px;max-width:340px}.toast.error{background:#8c3036}dialog{width:min(620px,calc(100% - 25px));border:1px solid var(--line);border-radius:17px;background:var(--card);color:var(--ink);padding:0;box-shadow:0 25px 80px #0005}dialog::backdrop{background:#07162699;backdrop-filter:blur(3px)}.dhead,.dfoot{padding:16px 19px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line)}.dfoot{border-top:1px solid var(--line);border-bottom:0;justify-content:flex-end;gap:8px}.dbody{padding:19px}.close{border:0;background:none;color:var(--muted);font-size:23px}.docpreview{white-space:pre-wrap;background:var(--bg);padding:14px;border-radius:10px;max-height:45vh;overflow:auto;font:13px/1.6 monospace}.hidden{display:none!important}.mobilenav{display:none}hr{border:0;border-top:1px solid var(--line);margin:17px 0}ul{padding-left:19px}li{margin:5px 0}.small{font-size:11px;color:var(--muted)}@media(max-width:1100px){.cards{grid-template-columns:repeat(2,1fr)}.quickgrid{grid-template-columns:repeat(2,1fr)}}@media(max-width:800px){.sidebar{transform:translateX(-105%);transition:.22s;width:270px;box-shadow:var(--shadow)}.sidebar.open{transform:none}.main{margin:0}.topbar{height:61px;padding:0 14px}.mobilemenu{display:block}.content{padding:20px 15px 88px}.twocol{grid-template-columns:1fr}.mobilenav{display:flex;position:fixed;bottom:0;left:0;right:0;z-index:18;background:var(--card);border-top:1px solid var(--line);justify-content:space-around;padding:7px 3px calc(7px + env(safe-area-inset-bottom))}.mobilenav button{border:0;background:none;color:var(--muted);font-size:10px;display:grid;gap:2px;justify-items:center}.mobilenav button span{font-size:18px}.mobilenav button.active{color:#3978a8;font-weight:800}}@media(max-width:560px){.stats{grid-template-columns:repeat(2,1fr)}.cards,.quickgrid{grid-template-columns:1fr}.hero{padding:23px 19px}.pagehead{display:block}.pagehead>.btn{margin-top:12px}.search input{width:calc(100vw - 145px)}.formgrid{grid-template-columns:1fr}.formfield.full{grid-column:auto}#map{height:370px}.kpis{grid-template-columns:1fr 1fr}}@media print{.sidebar,.topbar,.mobilenav,.btn,.filters,.footer,.toastarea{display:none!important}.main{margin:0}.content{padding:0}.view{display:none!important}.view.active{display:block!important}body{background:white;color:black}.panel,.material{box-shadow:none;break-inside:avoid}}
 
-    <!-- Leaflet Map CSS & JS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-    
-    <!-- Firebase SDK (v10 compat modules) -->
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+/* Профіль, захищені документи та спільнота */
+.profilehero{display:flex;align-items:center;gap:18px;padding:20px;background:linear-gradient(120deg,var(--navy),var(--navy2));color:#fff;border-radius:18px;margin-bottom:16px}.avatar{width:92px;height:92px;border-radius:50%;object-fit:cover;border:3px solid #ffffff88;background:#dce7ed;display:grid;place-items:center;color:var(--navy);font-size:30px;font-weight:800;flex:none}.profilehero p{color:#d5e1e9;margin:3px 0}.pill{display:inline-flex;padding:4px 9px;border-radius:30px;background:var(--soft);font-size:11px;color:var(--muted);font-weight:700}.communitygrid{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(250px,.7fr);gap:15px}.messageitem{display:flex;gap:10px;align-items:flex-start}.messageavatar{width:34px;height:34px;border-radius:50%;object-fit:cover;background:var(--soft);display:grid;place-items:center;flex:none;font-size:12px;font-weight:800}.messagebody{min-width:0;background:var(--soft);padding:9px 12px;border-radius:12px;max-width:100%}.messagebody b{font-size:12px}.messagebody p{margin:3px 0 0;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px}.messagebody small{font-size:10px;color:var(--muted)}.docrow{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid var(--line)}.docrow:last-child{border:0}.statusline{font-size:12px;color:var(--muted);display:flex;align-items:center;gap:7px}.statusdot{width:8px;height:8px;border-radius:50%;background:#c18c36}.statusdot.online{background:#299b68}.dangertext{color:var(--red)}.securehint{font-size:12px;color:var(--muted);line-height:1.5}.authwrap{max-width:680px;margin:0 auto}.chatlog.communitylog{height:440px;max-height:55vh;padding:12px;background:var(--bg);border:1px solid var(--line);border-radius:12px}.chatcompose textarea{min-height:44px;max-height:120px;flex:1}.avatarpreview{width:72px;height:72px;object-fit:cover;border-radius:50%;background:var(--soft)}.inlineactions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}@media(max-width:900px){.communitygrid{grid-template-columns:1fr}.profilehero{align-items:flex-start}.chatlog.communitylog{height:52vh}}@media(max-width:560px){.profilehero{flex-direction:column}.profilehero .avatar{width:76px;height:76px}.docrow{align-items:flex-start}.communitylog{padding:8px!important}}
 
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body {
-            background-color: #050b18;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            color: #ffffff;
-        }
+</style>
 
-        /* Мобільний каркас */
-        .phone-container {
-            width: 390px;
-            height: 760px;
-            background: #0f1d38;
-            border-radius: 46px;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.8), 0 0 0 14px #1a2942;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            position: relative;
-        }
 
-        /* Хедер */
-        .header {
-            padding: 16px 20px;
-            background: #15274d;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-size: 16px;
-            font-weight: 700;
-            border-bottom: 1px solid #1e3a70;
-            z-index: 10;
-        }
-        .header-icon {
-            cursor: pointer;
-            font-size: 18px;
-            position: relative;
-        }
-        .badge-dot {
-            position: absolute;
-            top: -2px;
-            right: -2px;
-            width: 8px;
-            height: 8px;
-            background: #ef4444;
-            border-radius: 50%;
-        }
 
-        /* Контентна частина */
-        .content {
-            padding: 16px;
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            position: relative;
-        }
 
-        .content.no-padding {
-            padding: 0;
-        }
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-database-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.14.1/firebase-storage-compat.js"></script>
+</head><body><div class="app">
+<aside class="sidebar" id="sidebar"><div class="brand"><div class="brandmark">В</div><div><b>ВетеранПомічник</b><small>Ваш простір підтримки</small></div></div>
+<div class="navlabel">Особистий простір</div><nav class="nav"><button class="active" data-view="home"><i>⌂</i>Головна</button><button data-view="tasks"><i>✓</i>Мій план справ</button><button data-view="saved"><i>☆</i>Збережене</button><button data-view="budget"><i>₴</i>Сімейний бюджет</button></nav>
+<div class="navlabel">Інформація та підтримка</div><nav class="nav" id="categoryNav"><button data-view="materials" data-category="Документи"><i>▤</i>Документи</button><button data-view="materials" data-category="Виплати та пільги"><i>₴</i>Виплати та пільги</button><button data-view="materials" data-category="Медицина"><i>✚</i>Медицина</button><button data-view="materials" data-category="Реабілітація"><i>♿</i>Реабілітація</button><button data-view="materials" data-category="Психологічна підтримка"><i>♡</i>Психологічна підтримка</button><button data-view="materials" data-category="Працевлаштування"><i>▣</i>Працевлаштування</button><button data-view="materials" data-category="Освіта"><i>▱</i>Освіта</button><button data-view="materials" data-category="Житло"><i>⌂</i>Житло</button><button data-view="materials" data-category="Сім’я"><i>♧</i>Сім’я</button><button data-view="materials" data-category="Власна справа"><i>◇</i>Власна справа</button><button data-view="map"><i>⌖</i>Карта установ</button><button data-view="emergency"><i>☎</i>Екстрена допомога</button><button data-view="assistant"><i>✧</i>Помічник</button></nav>
+<div class="navlabel">Застосунок</div><nav class="nav"><button data-view="settings"><i>⚙</i>Налаштування й дані</button></nav><div class="navlabel">Профіль і спільнота</div><nav class="nav"><button data-view="profile"><i>◉</i>Мій профіль</button><button data-view="community"><i>☷</i>Чат військових</button></nav><div class="sidefoot">Незалежний інформаційний сервіс.<br>Не є державним вебсайтом.</div></aside>
+<main class="main"><header class="topbar"><div style="display:flex;align-items:center;gap:12px"><button class="iconbtn mobilemenu" id="menuToggle">☰</button><span class="muted" id="crumb">Головна</span></div><div class="topactions"><div class="search"><span>⌕</span><input id="globalSearch" type="search" placeholder="Знайти інформацію…"></div><button class="iconbtn" id="themeToggle" title="Змінити тему">☾</button></div></header>
+<div class="content">
+<section class="view active" id="view-home"><div class="hero"><div><div class="eyebrow">Інформація · можливості · підтримка</div><h1>Ви не самі на шляху до нового етапу.</h1><p>Корисні орієнтири щодо документів, соціальної підтримки, здоров’я, роботи, освіти та родини — в одному місці. Рухайтеся у власному темпі.</p><div class="heroactions"><button class="btn yellow" data-go="materials">Переглянути матеріали →</button><button class="btn ghost" data-go="tasks">Мій план справ</button></div></div></div>
+<div class="grid stats"><div class="stat"><div class="statlabel">Матеріалів у довіднику</div><div class="statnum" id="statMaterials">100</div><div class="statnote">10 тематичних напрямів</div></div><div class="stat"><div class="statlabel">Ваші завдання</div><div class="statnum" id="statTasks">0</div><div class="statnote">У персональному плані</div></div><div class="stat"><div class="statlabel">Виконано</div><div class="statnum" id="statDone">0%</div><div class="statnote">Прогрес вашого плану</div></div><div class="stat"><div class="statlabel">Збережено</div><div class="statnum" id="statSaved">0</div><div class="statnote">Матеріалів в обраному</div></div></div>
+<div class="grid twocol"><div><div class="panelhead"><h2>Швидкий доступ</h2><span class="small">Оберіть потрібний напрям</span></div><div class="grid quickgrid"><div class="quick" data-go="materials" data-category="Документи"><div class="quickicon">▤</div><div><h3>Документи</h3><p>Посвідчення, витяги, заяви та довідки</p></div></div><div class="quick" data-go="materials" data-category="Виплати та пільги"><div class="quickicon">₴</div><div><h3>Виплати й пільги</h3><p>Державна та місцева підтримка</p></div></div><div class="quick" data-go="materials" data-category="Медицина"><div class="quickicon">✚</div><div><h3>Медицина</h3><p>Маршрути до медичних послуг</p></div></div><div class="quick" data-go="materials" data-category="Реабілітація"><div class="quickicon">♿</div><div><h3>Реабілітація</h3><p>Відновлення та протезування</p></div></div><div class="quick" data-go="materials" data-category="Працевлаштування"><div class="quickicon">▣</div><div><h3>Робота й освіта</h3><p>Пошук роботи та нові навички</p></div></div><div class="quick" data-go="map"><div class="quickicon">⌖</div><div><h3>Карта підтримки</h3><p>Знайдіть і позначте потрібні місця</p></div></div></div></div><div class="grid"><div class="panel"><h2>Ваш наступний крок</h2><p class="muted" style="font-size:13px">Додайте одну невелику справу, яку реально виконати найближчим часом.</p><button class="btn primary" data-go="tasks">Відкрити план справ</button></div><div class="notice"><strong>Важливо про достовірність</strong>Умови програм, перелік документів і контакти можуть змінюватися. Перед поданням заяви перевіряйте інформацію на офіційних ресурсах та в установі.</div></div></div>
+<div class="sectiongap"><div class="panelhead"><h2>Популярні матеріали</h2><button class="btn ghost smallbtn" data-go="materials">Усі матеріали →</button></div><div class="cards" id="homeMaterials"></div></div></section>
+<section class="view" id="view-materials"><div class="pagehead"><div><div class="eyebrow">Довідник можливостей</div><h1 id="materialsTitle">Матеріали та послуги</h1><p class="lead">Практичні орієнтири, чеклісти й посилання на офіційні джерела. Перевіряйте актуальність перед використанням.</p></div><button class="btn ghost" onclick="window.print()">⎙ Друкувати</button></div><div class="notice blue"><strong>Як користуватися довідником</strong>Це навігаційні матеріали, а не індивідуальна юридична чи медична консультація. Відкрийте картку, щоб побачити кроки та джерело.</div><div class="filters"><input class="field" id="materialSearch" placeholder="Пошук у матеріалах…"><select id="categoryFilter"><option value="">Усі категорії</option></select><select id="sortMaterials"><option value="title">За назвою</option><option value="category">За категорією</option></select><select id="savedFilter"><option value="all">Усі матеріали</option><option value="saved">Лише збережені</option></select></div><div class="small" id="resultCount" style="margin-bottom:10px"></div><div class="cards" id="materialGrid"></div></section>
+<section class="view" id="view-tasks"><div class="pagehead"><div><div class="eyebrow">Особистий простір</div><h1>Мій план справ</h1><p class="lead">Створюйте кроки, встановлюйте терміни та відмічайте виконане. Дані зберігаються у цьому браузері.</p></div><button class="btn primary" id="addTaskBtn">＋ Додати завдання</button></div><div class="panel"><div class="panelhead"><h2>Загальний прогрес</h2><b id="taskProgressLabel">0%</b></div><div class="progress"><span id="taskProgressBar" style="width:0%"></span></div><div class="small" id="taskProgressText" style="margin-top:8px">Поки немає завдань</div></div><div class="grid twocol sectiongap"><div><div class="panelhead"><h2>Активні завдання</h2><span class="tag" id="activeTaskCount">0</span></div><div class="tasklist" id="activeTasks"></div></div><div><div class="panelhead"><h2>Виконані</h2><button class="btn ghost smallbtn" id="clearDoneBtn">Очистити</button></div><div class="tasklist" id="doneTasks"></div></div></div></section>
+<section class="view" id="view-saved"><div class="pagehead"><div><div class="eyebrow">Ваша добірка</div><h1>Збережені матеріали</h1><p class="lead">Тут зібрано все, що ви позначили зірочкою.</p></div></div><div class="cards" id="savedGrid"></div></section>
+<section class="view" id="view-budget"><div class="pagehead"><div><div class="eyebrow">Планування родини</div><h1>Калькулятор сімейного бюджету</h1><p class="lead">Інструмент для планування доходів і витрат. Не є банківським сервісом чи фінансовою порадою.</p></div><button class="btn ghost" id="printBudget">⎙ Друкувати</button></div><div class="grid twocol"><div class="panel"><h2>Додати операцію</h2><form id="budgetForm"><div class="formgrid"><div class="formfield"><label>Тип</label><select id="budgetType"><option value="income">Дохід</option><option value="expense">Витрата</option></select></div><div class="formfield"><label>Сума, грн</label><input id="budgetAmount" type="number" min="0.01" step="0.01" required></div><div class="formfield"><label>Категорія</label><select id="budgetCategory"><option>Заробіток</option><option>Допомога / виплати</option><option>Житло</option><option>Продукти</option><option>Транспорт</option><option>Здоров’я</option><option>Освіта</option><option>Зв’язок</option><option>Інше</option></select></div><div class="formfield"><label>Дата</label><input id="budgetDate" type="date" required></div><div class="formfield full"><label>Нотатка (необов’язково)</label><input id="budgetNote" placeholder="Наприклад, комунальні послуги"></div></div><button class="btn primary" style="margin-top:14px">Додати до бюджету</button></form></div><div class="panel"><h2>Підсумок</h2><div class="kpis"><div class="kpi"><small>Доходи</small><b id="budgetIncome">0 ₴</b></div><div class="kpi"><small>Витрати</small><b id="budgetExpense">0 ₴</b></div><div class="kpi"><small>Залишок</small><b id="budgetBalance">0 ₴</b></div></div><p class="small">Показники розраховуються з доданих операцій. Дані зберігаються лише у вашому браузері.</p><div class="notice blue">Не вносьте номери карток, паролі, PIN-коди або інші платіжні секрети.</div></div></div><div class="panel sectiongap"><div class="panelhead"><h2>Операції</h2><button class="btn ghost smallbtn" id="clearBudgetBtn">Очистити список</button></div><div style="overflow:auto"><table class="table"><thead><tr><th>Дата</th><th>Тип</th><th>Категорія / нотатка</th><th>Сума</th><th></th></tr></thead><tbody id="budgetRows"></tbody></table></div></div></section>
+<section class="view" id="view-map"><div class="pagehead"><div><div class="eyebrow">Орієнтація поруч</div><h1>Карта корисних місць</h1><p class="lead">Карта OpenStreetMap, пошук адрес і власні позначки, які зберігаються локально.</p></div></div><div class="notice blue"><strong>Зверніть увагу</strong>Це не перевірений реєстр ветеранських установ. Перевіряйте адресу, графік роботи та доступність безпосередньо в організації. Для карти потрібен інтернет.</div><div id="mapTileHint" class="notice" hidden>Не вдалося завантажити фрагменти карти. Перевірте інтернет або спробуйте пізніше.</div><div class="maptools"><input class="field" id="mapSearch" placeholder="Місто або адреса"><button class="btn primary" id="mapFindBtn">Знайти</button><button class="btn ghost" id="locateBtn">◎ Моє місце</button><button class="btn ghost" id="addPinBtn">＋ Додати позначку</button></div><div id="map"></div><p class="small">Підказка: натисніть «Додати позначку», а потім на карту. Не додавайте чутливі адреси, якщо пристроєм користуються інші люди.</p><div class="panel sectiongap"><div class="panelhead"><h2>Мої позначки</h2><span class="tag" id="pinCount">0</span></div><div class="tasklist" id="pinList"></div></div></section>
+<section class="view" id="view-emergency"><div class="pagehead"><div><div class="eyebrow">Коли потрібна термінова допомога</div><h1>Екстрені контакти</h1><p class="lead">За безпосередньої загрози життю або здоров’ю телефонуйте відповідній екстреній службі.</p></div></div><div class="notice red"><strong>Небезпека життю — телефонуйте негайно</strong>Повідомте оператору, що сталося, де ви перебуваєте та чи є постраждалі. Не відкладайте виклик заради пошуку інформації на сайті.</div><div class="grid quickgrid sectiongap"><div class="panel"><div class="quickicon">🚒</div><h2 style="margin-top:12px">101</h2><h3>Пожежно-рятувальна служба</h3><p class="muted">Пожежі, рятувальні роботи, надзвичайні ситуації.</p><a class="btn primary" href="tel:101">Зателефонувати 101</a></div><div class="panel"><div class="quickicon">🚓</div><h2 style="margin-top:12px">102</h2><h3>Поліція</h3><p class="muted">Загроза безпеці, правопорушення, насильство.</p><a class="btn primary" href="tel:102">Зателефонувати 102</a></div><div class="panel"><div class="quickicon">🚑</div><h2 style="margin-top:12px">103</h2><h3>Екстрена медична допомога</h3><p class="muted">Невідкладний стан, травма або загроза життю.</p><a class="btn primary" href="tel:103">Зателефонувати 103</a></div><div class="panel"><div class="quickicon">🔧</div><h2 style="margin-top:12px">104</h2><h3>Аварійна газова служба</h3><p class="muted">Запах газу, витік або аварія газопостачання.</p><a class="btn primary" href="tel:104">Зателефонувати 104</a></div></div><div class="panel sectiongap"><h2>Що повідомити оператору</h2><ol><li>Точне місце події та орієнтир.</li><li>Що сталося і скільки людей потребують допомоги.</li><li>Небезпечні фактори: вогонь, дим, уламки, газ тощо.</li><li>Номер для зворотного зв’язку та дотримання інструкцій оператора.</li></ol><p class="small">Номери наведені як загальновідомі екстрені контакти України. Доступність зв’язку може залежати від регіону й обставин.</p></div></section>
+<section class="view" id="view-assistant"><div class="pagehead"><div><div class="eyebrow">Локальний довідник запитань</div><h1>Помічник</h1><p class="lead">Відповідає за вбудованою довідкою. Ваші повідомлення не надсилаються на сервер.</p></div></div><div class="grid twocol"><div class="panel chat"><div class="panelhead"><h2>Запитайте про наступний крок</h2><span class="tag">Локально</span></div><div class="chatlog" id="chatLog"><div class="bubble">Вітаю! Я локальний довідковий помічник. Можу підказати, де шукати інформацію про документи, пільги, медицину, роботу, освіту, житло та сімейну підтримку.</div></div><form class="chatcompose" id="chatForm"><input id="chatInput" placeholder="Наприклад: де перевірити пільги?" autocomplete="off"><button class="btn primary">Надіслати</button></form></div><div class="panel"><h2>Популярні запитання</h2><div class="tasklist" id="faqButtons"></div><hr><div class="notice blue"><strong>Межі помічника</strong>Він не має доступу до державних реєстрів, не перевіряє статус і не подає заяви. Для індивідуального випадку зверніться до установи або фахівця.</div></div></div></section>
 
-        /* Пошук */
-        .search-box {
-            background: #203562;
-            padding: 10px 14px;
-            border-radius: 20px;
-            display: flex;
-            align-items: center;
-            margin-bottom: 14px;
-            color: #ffffff;
-            font-size: 13px;
-            border: 1px solid #3b82f6;
-        }
-        .search-box input {
-            background: none;
-            border: none;
-            color: #ffffff;
-            outline: none;
-            width: 100%;
-            margin-left: 8px;
-            font-size: 13px;
-        }
-        .search-box input::placeholder {
-            color: #cbd5e1;
-        }
-
-        /* Головна сітка */
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .tile {
-            background: #1e325c;
-            padding: 16px;
-            border-radius: 16px;
-            text-align: center;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.2s;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .tile:hover { background: #274075; transform: translateY(-2px); }
-        .tile.orange { background: #dc2626; }
-        .tile.orange:hover { background: #ef4444; }
-        .tile-icon { font-size: 28px; margin-bottom: 8px; }
-        .tile-title { font-size: 11px; font-weight: 700; letter-spacing: 0.5px; }
-
-        /* Картки */
-        .card {
-            background: #203562;
-            padding: 12px 16px;
-            border-radius: 14px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: background 0.2s;
-        }
-        .card:hover { background: #28427b; }
-
-        /* Нижня панель */
-        .nav-bar {
-            height: 64px;
-            background: #0b1528;
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            border-top: 1px solid #1e325c;
-            z-index: 10;
-        }
-        .nav-item {
-            color: #64748b;
-            font-size: 10px;
-            cursor: pointer;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 3px;
-        }
-        .nav-item.active {
-            color: #38bdf8;
-            font-weight: 700;
-        }
-        .nav-item-icon { font-size: 18px; }
-
-        /* Повноекранна мапа */
-        #full-map-container {
-            width: 100%;
-            height: 100%;
-            z-index: 1;
-        }
-
-        /* Блоки протезування */
-        .prosthetics-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 12px;
-        }
-        .prosthetics-card {
-            background: #1e325c;
-            border-radius: 14px;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.2s;
-        }
-        .prosthetics-card:hover { transform: translateY(-2px); }
-        .prosthetics-thumb {
-            width: 100%;
-            height: 95px;
-            background: #15274d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 32px;
-            position: relative;
-        }
-        .play-btn-overlay {
-            position: absolute;
-            background: rgba(37, 99, 235, 0.9);
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 14px;
-            color: white;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-        }
-        .prosthetics-info { padding: 10px; }
-        .prosthetics-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; color: #fff; }
-        .prosthetics-rating { font-size: 10px; color: #f59e0b; }
-
-        /* Фільтри */
-        .filter-row {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
-            overflow-x: auto;
-            padding-bottom: 4px;
-        }
-        .filter-chip {
-            background: #1e325c;
-            padding: 6px 12px;
-            border-radius: 16px;
-            font-size: 11px;
-            color: #cbd5e1;
-            cursor: pointer;
-            white-space: nowrap;
-            border: 1px solid #283e72;
-        }
-        .filter-chip.active {
-            background: #2563eb;
-            color: white;
-            border-color: #3b82f6;
-        }
-
-        /* Чат */
-        .chat-container {
-            display: flex;
-            flex-direction: column;
-            height: 100%;
-        }
-        .chat-messages {
-            flex: 1;
-            overflow-y: auto;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            padding-right: 4px;
-            max-height: 460px;
-        }
-        .message-bubble {
-            max-width: 85%;
-            padding: 10px 14px;
-            border-radius: 14px;
-            font-size: 12px;
-            line-height: 1.4;
-        }
-        .message-bubble.incoming {
-            background: #1e325c;
-            align-self: flex-start;
-            border-bottom-left-radius: 2px;
-        }
-        .message-bubble.outgoing {
-            background: #2563eb;
-            color: white;
-            align-self: flex-end;
-            border-bottom-right-radius: 2px;
-        }
-        .message-sender { font-size: 10px; color: #38bdf8; font-weight: 700; margin-bottom: 2px; }
-        .chat-input-area {
-            display: flex;
-            gap: 8px;
-            margin-top: 10px;
-        }
-        .chat-input-area input {
-            flex: 1;
-            background: #15274d;
-            border: 1px solid #283e72;
-            padding: 10px 14px;
-            border-radius: 20px;
-            color: white;
-            outline: none;
-            font-size: 12px;
-        }
-        .chat-send-btn {
-            background: #2563eb;
-            border: none;
-            color: white;
-            width: 38px;
-            height: 38px;
-            border-radius: 50%;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 16px;
-        }
-
-        /* Google Auth Dark Theme */
-        .google-page {
-            background: #121212;
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-            padding: 30px 24px;
-            color: #e3e3e3;
-        }
-        .google-card-box {
-            background: #1e1e1e;
-            border: 1px solid #3c4043;
-            border-radius: 12px;
-            padding: 36px 40px;
-            max-width: 420px;
-            width: 100%;
-            margin: auto;
-            text-align: left;
-        }
-        .google-input-group {
-            position: relative;
-            margin-bottom: 24px;
-            margin-top: 20px;
-        }
-        .google-input-group input {
-            width: 100%;
-            padding: 16px;
-            background: transparent;
-            border: 1px solid #8e918f;
-            border-radius: 4px;
-            color: white;
-            font-size: 15px;
-            outline: none;
-        }
-        .google-btn-next {
-            background: #8ab4f8;
-            color: #202124;
-            border: none;
-            padding: 10px 24px;
-            border-radius: 20px;
-            font-weight: 600;
-            font-size: 14px;
-            cursor: pointer;
-            float: right;
-        }
-        .google-btn-next:hover { background: #aecbfa; }
-
-        .modal-overlay {
-            position: absolute;
-            top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0, 0, 0, 0.85);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            z-index: 100;
-            padding: 16px;
-        }
-        .modal-card {
-            background: #15274d;
-            border-radius: 20px;
-            width: 100%;
-            max-height: 90vh;
-            overflow-y: auto;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-            border: 1px solid #283e72;
-        }
-        .btn {
-            padding: 8px 14px;
-            border-radius: 10px;
-            border: none;
-            font-weight: 700;
-            cursor: pointer;
-            font-size: 11px;
-        }
-        .btn-primary { background: #2563eb; color: white; }
-        .btn-secondary { background: #334155; color: white; }
-
-        .profile-tabs {
-            display: flex;
-            border-bottom: 1px solid #1e325c;
-            margin-bottom: 12px;
-        }
-        .profile-tab-btn {
-            flex: 1;
-            padding: 10px 0;
-            background: none;
-            border: none;
-            color: #64748b;
-            font-size: 10px;
-            font-weight: bold;
-            cursor: pointer;
-        }
-        .profile-tab-btn.active {
-            color: white;
-            border-bottom: 2px solid #38bdf8;
-        }
-
-        .review-item {
-            background: #15274d;
-            border: 1px solid #283e72;
-            border-radius: 10px;
-            padding: 10px;
-            margin-bottom: 8px;
-            font-size: 11px;
-        }
-        .review-header {
-            display: flex;
-            justify-content: space-between;
-            font-weight: bold;
-            margin-bottom: 4px;
-        }
-    </style>
-</head>
-<body>
-
-<div class="phone-container">
-    <div class="header" id="app-header">ВетеранПомічник</div>
-    <div class="content" id="app-content"></div>
-
-    <div class="nav-bar" id="app-nav" style="display: none;">
-        <div class="nav-item active" id="nav-home" onclick="openScreen('home')">
-            <span class="nav-item-icon">🏠</span><span>Головна</span>
-        </div>
-        <div class="nav-item" id="nav-doctors" onclick="openScreen('doctors')">
-            <span class="nav-item-icon">🩺</span><span>Лікарі</span>
-        </div>
-        <div class="nav-item" id="nav-prosthetics" onclick="openScreen('prosthetics')">
-            <span class="nav-item-icon">🦾</span><span>Протези</span>
-        </div>
-        <div class="nav-item" id="nav-chat" onclick="openScreen('chat')">
-            <span class="nav-item-icon">💬</span><span>Чат ЗСУ</span>
-        </div>
-        <div class="nav-item" id="nav-map" onclick="openScreen('map')">
-            <span class="nav-item-icon">📍</span><span>Мапа</span>
-        </div>
-        <div class="nav-item" id="nav-profile" onclick="openScreen('profile')">
-            <span class="nav-item-icon">👤</span><span>Профіль</span>
-        </div>
-    </div>
+<section class="view" id="view-profile"><div class="pagehead"><div><div class="eyebrow">Особистий кабінет</div><h1>Профіль військового</h1><p class="lead">Керуй своєю інформацією. Поля про службу необов’язкові й не публікуються у спільному чаті.</p></div><span class="pill" id="profileCloudStatus">Не підключено</span></div>
+<div id="profileAuth" class="authwrap"><div class="panel">
+<h2>Особистий кабінет</h2>
+<div class="notice blue">Створи особистий акаунт або увійди за електронною поштою та паролем. Після входу профіль і чат синхронізуються між пристроями. Дані профілю й документи доступні лише власнику акаунта та уповноваженим адміністраторам.</div>
+<div class="formgrid">
+<div class="formfield full"><label for="authEmail">Електронна пошта</label><input class="field" id="authEmail" type="email" autocomplete="email" placeholder="name@example.com" required style="width:100%"></div>
+<div class="formfield full"><label for="authPassword">Пароль</label><input class="field" id="authPassword" type="password" autocomplete="current-password" minlength="8" placeholder="Щонайменше 8 символів" required style="width:100%"></div>
+<div class="formfield" id="registerNameWrap"><label for="authFullName">Ім’я та прізвище</label><input class="field" id="authFullName" maxlength="100" autocomplete="name" placeholder="Ваше ім’я та прізвище" style="width:100%"></div>
+<div class="formfield" id="registerNicknameWrap"><label for="authNickname">Нікнейм (необов’язково)</label><input class="field" id="authNickname" maxlength="40" placeholder="Як вас бачити у чаті" style="width:100%"></div>
 </div>
+<div class="inlineactions" style="margin-top:14px">
+<button class="btn primary" id="registerCloudBtn" type="button">Створити акаунт</button>
+<button class="btn ghost" id="loginCloudBtn" type="button">Увійти</button>
+<button class="btn ghost" id="resetPasswordBtn" type="button">Забули пароль?</button>
+</div>
+<p class="securehint" id="authStatus" aria-live="polite"></p>
+</div></div>
+<div id="profileArea" hidden><div class="profilehero"><img class="avatar" id="profileAvatar" alt="Аватар профілю"><div><h2 id="profileDisplayName" style="color:white;margin:0">Ваш профіль</h2><p id="profileRoleLine">Особистий профіль</p><span class="pill" style="background:#ffffff20;color:white">Приватний профіль</span></div><div style="margin-left:auto"><button class="btn ghost" id="logoutCloudBtn">Вийти</button></div></div>
+<div class="grid twocol"><div class="panel"><div class="panelhead"><h2>Мої дані</h2><button class="btn primary smallbtn" id="saveProfileBtn">Зберегти</button></div><form id="profileForm"><div class="formgrid"><div class="formfield"><label>Ім’я та прізвище</label><input class="field" id="pFullName" maxlength="100" style="width:100%"></div><div class="formfield"><label>Вік (необов’язково)</label><input class="field" id="pAge" type="number" min="18" max="110" style="width:100%"></div><div class="formfield"><label>Статус</label><select id="pStatus" style="width:100%"><option>Ветеран / ветеранка</option><option>Військовослужбовець / військовослужбовиця</option><option>Член родини</option><option>Волонтер / волонтерка</option></select></div><div class="formfield"><label>Звання (необов’язково)</label><input class="field" id="pRank" maxlength="60" style="width:100%"></div><div class="formfield"><label>Бригада (необов’язково)</label><input class="field" id="pBrigade" maxlength="80" autocomplete="off" placeholder="Можна не вказувати" style="width:100%"></div><div class="formfield"><label>Телефон (необов’язково)</label><input class="field" id="pPhone" type="tel" maxlength="30" placeholder="+380…" style="width:100%"></div><div class="formfield"><label>Місто / область</label><input class="field" id="pCity" maxlength="100" style="width:100%"></div><div class="formfield"><label>Аватарка</label><input class="field" id="pAvatarFile" type="file" accept="image/png,image/jpeg,image/webp" style="width:100%"></div><div class="formfield full"><label>Про себе (без службових подробиць)</label><textarea id="pBio" maxlength="500" placeholder="Коротко про інтереси та чим можете допомогти спільноті"></textarea></div></div></form><p class="securehint">Не вказуйте номер підрозділу, позивний, місце служби/дислокації, маршрути, графіки, озброєння або інші оперативні дані. Телефон і дані про службу зберігаються як приватні поля.</p></div>
+<div class="panel"><h2>Мої документи</h2><div class="notice blue">Документи зберігаються у приватному Firebase Storage; доступ обмежений правилами Firebase для власника акаунта. Не завантажуйте документи з оперативною інформацією. Перед реальним використанням перевірте правила доступу.</div><form id="secureDocForm"><div class="formfield"><label>Назва документа</label><input class="field" id="docLabel" maxlength="80" placeholder="Наприклад, посвідчення УБД" style="width:100%" required></div><div class="formfield" style="margin-top:10px"><label>Файл PDF або зображення (до 2 МБ)</label><input class="field" id="secureDocFile" type="file" accept="application/pdf,image/jpeg,image/png,image/webp" style="width:100%" required></div><button class="btn primary" style="margin-top:12px" type="submit">Зберегти приватно</button></form><div id="secureDocList" style="margin-top:15px"><div class="empty">Документів поки немає.</div></div></div></div></div></section>
+<section class="view" id="view-community"><div class="pagehead"><div><div class="eyebrow">Спільнота та взаємодопомога</div><h1>Чат військових і ветеранів</h1><p class="lead">Спілкування між користувачами платформи. Повідомлення синхронізуються через підключений хмарний проєкт.</p></div><span class="pill" id="chatConnection">Немає з’єднання</span></div><div id="chatLocked" class="notice blue">Щоб долучитися до чату, спочатку налаштуйте хмарне підключення та увійдіть у профіль у розділі «Мій профіль».</div><div id="communityArea" hidden><div class="notice red"><strong>Правила безпеки</strong>Не публікуйте номери бригад/підрозділів, позиції, маршрути, графіки, фото документів, дані побратимів або будь-яку оперативну інформацію. Чат не є захищеним каналом військового зв’язку.</div><div class="communitygrid"><div class="panel"><div class="panelhead"><h2>Загальний чат</h2><button class="btn ghost smallbtn" id="refreshChatBtn">Оновити</button></div><div id="communityLog" class="chatlog communitylog" aria-live="polite"><div class="empty">Поки немає повідомлень. Напиши перше привітання.</div></div><form id="communityCompose" class="chatcompose"><textarea id="communityMessage" maxlength="1500" placeholder="Напиши повідомлення спільноті…" required></textarea><button class="btn primary" type="submit">Надіслати</button></form><p class="securehint">Повідомлення зберігаються на сервері та доступні іншим учасникам чату. Не надсилайте секретні або чутливі дані.</p></div><div class="panel"><h2>Про спільноту</h2><p class="muted">Знайомся, підтримуй інших, ділися досвідом цивільного життя та корисними ресурсами.</p><div class="notice blue">Поточна версія має спільну загальну кімнату. Приватні повідомлення, вкладення в чаті та окремі групи потребують наступного етапу розробки й модерації.</div><button class="btn ghost" id="communityRulesBtn">Правила спільноти</button><div class="statusline" style="margin-top:15px"><span class="statusdot" id="chatDot"></span><span id="chatStatusText">Очікує підключення</span></div></div></div></div></section>
 
+<section class="view" id="view-settings"><div class="pagehead"><div><div class="eyebrow">Керування застосунком</div><h1>Налаштування й дані</h1><p class="lead">Змініть вигляд, експортуйте резервну копію або відновіть дані з JSON.</p></div></div><div class="grid twocol"><div class="panel"><h2>Вигляд</h2><div class="formfield"><label>Тема інтерфейсу</label><select id="themeSelect"><option value="light">Світла</option><option value="dark">Темна</option><option value="system">Як у системі</option></select></div><hr><div class="formfield"><label>Розмір тексту</label><select id="fontScale"><option value="14">Компактний</option><option value="15">Стандартний</option><option value="17">Збільшений</option><option value="19">Великий</option></select></div></div><div class="panel"><h2>Резервна копія</h2><p class="small">Експортуються завдання, обране, бюджет і власні позначки. Довідкові матеріали не експортуються.</p><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn primary" id="exportBtn">↓ Експортувати JSON</button><button class="btn ghost" id="importBtn">↑ Імпортувати JSON</button><input type="file" id="importFile" accept="application/json,.json" class="hidden"></div><hr><h3>Скидання локальних даних</h3><p class="small">Видалить ваші завдання, бюджет, обране й позначки з цього браузера.</p><button class="btn danger" id="resetBtn">Скинути мої дані</button></div></div><div class="panel sectiongap"><h2>Створити чернетку звернення</h2><p class="small">Сформуйте базовий текст звернення для подальшого редагування. Не додавайте сюди скани документів або надмірні персональні відомості.</p><form id="documentForm"><div class="formgrid"><div class="formfield"><label for="docRecipient">Кому (установа / посада)</label><input id="docRecipient" maxlength="180" placeholder="Назва установи"></div><div class="formfield"><label for="docAuthor">Від кого</label><input id="docAuthor" maxlength="180" placeholder="Ваше ім’я (за бажанням)"></div><div class="formfield full"><label for="docSubject">Тема звернення</label><input id="docSubject" maxlength="180" placeholder="Щодо надання інформації"></div><div class="formfield full"><label for="docText">Текст / суть питання</label><textarea id="docText" maxlength="5000" placeholder="Опишіть обставини та сформулюйте прохання…"></textarea></div></div><div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px"><button class="btn primary" type="submit">↓ Завантажити чернетку .txt</button><button class="btn ghost" type="button" id="previewDocBtn">Переглянути для друку</button></div></form></div><div class="panel sectiongap"><h2>Приватність і безпека</h2><ul><li>Локальні завдання та налаштування зберігаються у браузері. Для профілю й спільного чату використовується Firebase Authentication, Realtime Database та Cloud Storage.</li><li>Завдання, обране, бюджет і позначки зберігаються у localStorage цього браузера на цьому пристрої.</li><li>Не зберігайте паролі, PIN-коди, коди Дії, банківські реквізити, медичні документи чи матеріали з оперативною військовою інформацією. Документи профілю шифруються у браузері, але це не замінює спеціалізоване захищене сховище.</li><li>Очищення даних браузера, приватний режим або видалення даних сайту може призвести до втрати записів. Регулярно експортуйте резервну копію.</li><li>Карта й зовнішні посилання потребують інтернету; під час їх використання браузер звертається до сторонніх сервісів.</li></ul></div><div class="panel sectiongap"><h2>Офіційні джерела для перевірки</h2><p class="small">Посилання ведуть на головні сторінки установ. Знайдіть потрібну послугу й перевірте дату оновлення.</p><div class="sources"><a target="_blank" rel="noopener" href="https://mva.gov.ua/">Міністерство у справах ветеранів</a><a target="_blank" rel="noopener" href="https://diia.gov.ua/">Портал Дія</a><a target="_blank" rel="noopener" href="https://www.msp.gov.ua/">Мінсоцполітики</a><a target="_blank" rel="noopener" href="https://moz.gov.ua/">МОЗ України</a><a target="_blank" rel="noopener" href="https://www.dcz.gov.ua/">Державна служба зайнятості</a><a target="_blank" rel="noopener" href="https://mon.gov.ua/">МОН України</a><a target="_blank" rel="noopener" href="https://business.diia.gov.ua/">Дія.Бізнес</a><a target="_blank" rel="noopener" href="https://www.pfu.gov.ua/">Пенсійний фонд України</a></div></div></section>
+<div class="footer">ВетеранПомічник — незалежний інформаційний сервіс, не офіційний державний продукт. Інформація має довідковий характер.</div>
+</div></main><nav class="mobilenav"><button class="active" data-view="home"><span>⌂</span>Головна</button><button data-view="materials"><span>▤</span>Матеріали</button><button data-view="tasks"><span>✓</span>Справи</button><button data-view="map"><span>⌖</span>Карта</button><button data-view="settings"><span>⚙</span>Ще</button></nav></div><div class="toastarea" id="toastArea" aria-live="polite"></div>
+<dialog id="materialDialog"><div class="dhead"><div><div class="eyebrow" id="dialogCategory">Матеріал</div><h2 id="dialogTitle" style="margin:4px 0 0"></h2></div><button class="close" data-close="materialDialog">×</button></div><div class="dbody" id="dialogBody"></div><div class="dfoot"><button class="btn ghost" data-close="materialDialog">Закрити</button><button class="btn primary" id="dialogSaveBtn">☆ Зберегти</button></div></dialog>
+<dialog id="taskDialog"><div class="dhead"><h2>Нове завдання</h2><button class="close" data-close="taskDialog">×</button></div><form id="taskForm"><div class="dbody"><div class="formgrid"><div class="formfield full"><label>Назва завдання *</label><input id="taskName" required maxlength="120" placeholder="Наприклад, уточнити перелік документів"></div><div class="formfield"><label>Термін</label><input id="taskDate" type="date"></div><div class="formfield"><label>Напрям</label><select id="taskCategory"><option>Документи</option><option>Виплати та пільги</option><option>Медицина</option><option>Робота</option><option>Сім’я</option><option>Інше</option></select></div><div class="formfield full"><label>Нотатка</label><textarea id="taskDetails" maxlength="500"></textarea></div></div></div><div class="dfoot"><button type="button" class="btn ghost" data-close="taskDialog">Скасувати</button><button class="btn primary">Зберегти завдання</button></div></form></dialog>
+<dialog id="pinDialog"><div class="dhead"><h2>Нова позначка</h2><button class="close" data-close="pinDialog">×</button></div><form id="pinForm"><div class="dbody"><p class="small" id="pinCoords"></p><div class="formfield"><label>Назва місця *</label><input id="pinName" required maxlength="100"></div><div class="formfield" style="margin-top:10px"><label>Нотатка</label><input id="pinNote" maxlength="200"></div></div><div class="dfoot"><button type="button" class="btn ghost" data-close="pinDialog">Скасувати</button><button class="btn primary">Зберегти позначку</button></div></form></dialog>
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
 <script>
-    // ІНІЦІАЛІЗАЦІЯ FIREBASE
-    var firebaseConfig = {
-        apiKey: "AIzaSyCj_RHDFhcasfxivujq-4YOmIIJHOl3hFI",
-        authDomain: "veteranpomichnyk.firebaseapp.com",
-        databaseURL: "https://veteranpomichnyk-default-rtdb.firebaseio.com",
-        projectId: "veteranpomichnyk",
-        storageBucket: "veteranpomichnyk.appspot.com",
-        messagingSenderId: "1016147843928",
-        appId: "1:1016147843928:web:02de7afb612832ec25232d"
-    };
-    
-    var db = null;
-    try {
-        if (typeof firebase !== 'undefined') {
-            firebase.initializeApp(firebaseConfig);
-            db = firebase.database();
-        }
-    } catch(e) {
-        console.log("Firebase init error:", e);
+'use strict';
+/* Каталог: десять тематичних напрямів, по десять унікальних карток. */
+const CATEGORIES=['Документи','Виплати та пільги','Медицина','Реабілітація','Психологічна підтримка','Працевлаштування','Освіта','Житло','Сім’я','Власна справа'];
+const SOURCES={veteran:['Міністерство у справах ветеранів','https://mva.gov.ua/'],diia:['Портал Дія','https://diia.gov.ua/'],social:['Мінсоцполітики','https://www.msp.gov.ua/'],health:['МОЗ України','https://moz.gov.ua/'],jobs:['Державна служба зайнятості','https://www.dcz.gov.ua/'],education:['МОН України','https://mon.gov.ua/'],business:['Дія.Бізнес','https://business.diia.gov.ua/'],gov:['Урядовий портал','https://www.kmu.gov.ua/'],pfu:['Пенсійний фонд України','https://www.pfu.gov.ua/']};
+const DATA=[
+['Документи','Перевірка статусу учасника бойових дій','З’ясуйте, який орган оформлював статус, і перевірте актуальний порядок підтвердження відомостей.','Підготуйте документ, що посвідчує особу, та наявні підтвердження. Уточніть у відповідальному підрозділі, чи внесені відомості до реєстру. Перевірте доступні електронні послуги.','veteran'],
+['Документи','Посвідчення ветерана: отримання або заміна','Орієнтир щодо оформлення, заміни чи перевірки посвідчення відповідно до вашої категорії.','Уточніть вид посвідчення та орган видачі. Перевірте чинний перелік документів, спосіб подання, строки й можливість електронного відображення.','veteran'],
+['Документи','Витяг із реєстру ветеранів','Як з’ясувати, чи доступний вам витяг або підтвердження відомостей у державних сервісах.','Перевірте розділ послуг на сайті Мінветеранів і порталі Дія. Якщо відомості відсутні або помилкові, зверніться до органу, уповноваженого їх виправити.','diia'],
+['Документи','Підготовка до звернення в установу','Універсальний список для підготовки до особистого або електронного звернення.','Сформулюйте мету звернення, запишіть питання, уточніть потребу в оригіналах, копіях і попередньому записі. Збережіть номер реєстрації звернення.','gov'],
+['Документи','Як скласти заяву або звернення','Практична структура письмового звернення без готових юридичних висновків.','Зазначте адресата, контактні дані, суть питання, чітке прохання, дату й підпис, якщо потрібен. Додайте лише необхідні копії та збережіть доказ відправлення.','gov'],
+['Документи','Відновлення втрачених документів','З чого почати, якщо посвідчення чи інший документ втрачено або пошкоджено.','З’ясуйте орган, який видавав документ. Уточніть процедуру повторної видачі, чи потрібна заява про втрату, фото або інші підтвердження. Для документів особи зверніться до ДМС/ЦНАП.','diia'],
+['Документи','Цифрові документи в Дії','Як перевірити доступність електронних документів і коректність відображення даних.','Оновіть застосунок, перевірте доступ до документа та відповідність даних. Електронний документ використовуйте там, де його прийняття передбачене правилами послуги.','diia'],
+['Документи','Довідки про проходження служби','Орієнтир для запиту документів, пов’язаних із проходженням військової служби.','Зверніться до відповідного підрозділу або архіву. Уточніть назву довідки, період, форму запиту та спосіб отримання. Не публікуйте службові дані.','veteran'],
+['Документи','Документи для членів сім’ї','Як з’ясувати, які документи можуть знадобитися родині для конкретної послуги.','Визначте послугу та заявника. Уточніть правила підтвердження родинного зв’язку, представництва й згоди на обробку даних. Перелік залежить від програми.','social'],
+['Документи','Послуги ЦНАП','Підготовка до отримання адміністративної послуги через центр надання адмінпослуг.','Знайдіть ЦНАП через сайт громади. Перевірте, чи надається потрібна послуга, графік, запис і перелік документів. Збережіть опис прийнятих документів.','gov'],
+['Виплати та пільги','Де перевіряти актуальні пільги','Надійні стартові точки для пошуку чинних соціальних гарантій.','Перевірте інформацію Мінветеранів, Мінсоцполітики, ПФУ та своєї громади. Уточніть категорію отримувача, умови, документи й строки.','veteran'],
+['Виплати та пільги','Пільги на житлово-комунальні послуги','Як перевірити право на пільгу та порядок її оформлення.','Зверніться до Пенсійного фонду України або перевірте офіційні електронні сервіси. Умови залежать від статусу, домогосподарства й чинних правил.','pfu'],
+['Виплати та пільги','Житлова субсидія: перевірка права','Де знайти актуальні умови житлової субсидії.','Перевірте офіційну інформацію ПФУ. Відомості про домогосподарство й доходи подавайте лише через офіційні канали.','pfu'],
+['Виплати та пільги','Одноразова грошова допомога','Як з’ясувати, чи передбачена допомога у вашій ситуації.','Визначте правову підставу та категорію отримувача. Попросіть уповноважений орган надати актуальний письмовий перелік документів і строків.','veteran'],
+['Виплати та пільги','Місцеві програми підтримки','Як знайти додаткову підтримку у територіальній громаді.','Перевірте сайт ради та місцеву програму підтримки ветеранів. Запитайте про бюджетні обмеження, терміни прийому заяв і відповідального фахівця.','gov'],
+['Виплати та пільги','Компенсації та відшкодування витрат','Як перевірити, чи існує програма компенсації для вашої потреби.','Уточніть допустимі витрати, вимоги до чеків і момент придбання. Не купуйте товари в розрахунку на компенсацію без підтвердження правил.','veteran'],
+['Виплати та пільги','Пільги для членів сім’ї','Де з’ясувати гарантії, що можуть поширюватися на родину.','Перевірте категорію члена сім’ї та підставу. Умови різняться залежно від статусу та виду послуги. Запитайте орган про чинну норму.','social'],
+['Виплати та пільги','Як перевірити стан заяви','Практичні кроки після подання документів на допомогу.','Збережіть реєстраційний номер і дату. Перевірте статус через офіційний кабінет або контакт установи. Якщо строк минув, подайте письмовий запит.','gov'],
+['Виплати та пільги','Захист від шахрайства з виплатами','Ознаки небезпечних повідомлень про нібито гарантовані виплати.','Не повідомляйте PIN, CVV, пароль чи SMS-коди. Не переходьте за сумнівними посиланнями. Перевіряйте програму на сайті адміністратора.','gov'],
+['Виплати та пільги','Звернення до Пенсійного фонду','Як знайти офіційний канал для пенсійних та пільгових питань.','Скористайтеся офіційним сайтом ПФУ або сервісним центром. Не передавайте пароль чи одноразові коди особам, які обіцяють прискорити розгляд.','pfu'],
+['Медицина','Як знайти сімейного лікаря','З чого почати, якщо потрібен сімейний лікар або зміна лікаря.','Перевірте доступні заклади й лікарів через офіційні ресурси НСЗУ/МОЗ. Уточніть, чи укладає лікар декларації та як записатися.','health'],
+['Медицина','Електронне направлення','Що варто знати про направлення до спеціаліста.','Обговоріть потребу з лікарем. Уточніть строк дії та маршрут за направленням. Не відкладайте невідкладну допомогу через відсутність планового направлення.','health'],
+['Медицина','Безоплатні медичні послуги','Як перевірити, які послуги покриває Програма медичних гарантій.','Перегляньте актуальні пакети на сайті НСЗУ. Перевірте, чи має заклад договір за потрібним напрямом і чи потрібне направлення.','health'],
+['Медицина','Медична документація','Як впорядкувати виписки, висновки та результати обстежень.','Зберігайте оригінали безпечно, ведіть список дат і закладів. Передавайте лікарю захищеним каналом. Не завантажуйте медичні скани у цей застосунок.','health'],
+['Медицина','Підготовка до консультації','Як зробити прийом лікаря більш предметним.','Запишіть симптоми, час початку, ліки й запитання. Візьміть попередні висновки та повідомте про алергії й важливі зміни стану.','health'],
+['Медицина','Права пацієнта','Де перевірити права та механізми звернення пацієнта.','Перегляньте матеріали МОЗ і НСЗУ. У разі проблеми попросіть пояснення закладу, а далі використайте офіційний канал звернення.','health'],
+['Медицина','Психіатрична допомога: маршрут','Як звернутися по фахову допомогу з питань психічного здоров’я.','Почніть із сімейного лікаря або профільного медичного закладу. Уточніть доступність і конфіденційність. За безпосередньої небезпеки звертайтеся до екстреної допомоги.','health'],
+['Медицина','Медичні послуги для родини','Як зорієнтуватися в маршруті допомоги для близьких.','Знайдіть сімейного лікаря та перевірте доступні послуги. Для дітей або складних станів уточніть спеціалізований маршрут у лікаря.','health'],
+['Медицина','Рецепти та програми забезпечення ліками','Де перевіряти умови державних програм забезпечення ліками.','Перевірте програми на ресурсах МОЗ/НСЗУ та уточніть у лікаря, чи відповідає призначення умовам. Наявність препарату в аптеці перевіряється окремо.','health'],
+['Медицина','Друга медична думка','Коли і як отримати додаткову консультацію.','Попросіть копії висновків і результатів досліджень. Зверніться до іншого профільного спеціаліста та уточніть матеріали для консультації.','health'],
+['Реабілітація','Перший крок до реабілітації','Як обговорити індивідуальну програму відновлення з медичною командою.','Почніть із лікаря, який координує лікування. Попросіть пояснити мету, етапи, очікувані результати та критерії безпечного навантаження.','health'],
+['Реабілітація','Протезування: де шукати порядок','Офіційні джерела щодо забезпечення допоміжними засобами реабілітації.','Перевірте чинний порядок на сайтах Мінсоцполітики та Мінветеранів. Уточніть документи, вибір підприємства, сервіс і ремонт.','social'],
+['Реабілітація','Допоміжні засоби реабілітації','Як з’ясувати можливість забезпечення кріслом колісним, ортезом чи іншим засобом.','Попросіть фахівця визначити функціональні потреби. Перевірте каталог, процедуру та умови ремонту/заміни на офіційних ресурсах.','social'],
+['Реабілітація','Фізична терапія: підготовка','Що обговорити з фізичним терапевтом перед початком занять.','Узгодьте цілі, обмеження, біль, безпечне навантаження та домашні вправи. Не виконуйте вправи через гострий біль без консультації.','health'],
+['Реабілітація','Ерготерапія та повсякденні навички','Як адаптувати побут і робоче середовище.','Обговоріть завдання, які даються складно: пересування, самообслуговування, робота, дозвілля. Попросіть оцінити середовище та адаптації.','health'],
+['Реабілітація','Адаптація житла','Планування доступності помешкання та безпечного пересування.','Оцініть входи, пороги, санвузол, проходи й освітлення. Залучіть ерготерапевта або фахівця з доступності. Перед ремонтом перевірте програми підтримки.','veteran'],
+['Реабілітація','Підтримка після ампутації','Питання для мультидисциплінарної команди.','Уточніть догляд, контроль болю, підготовку до протезування, тренування мобільності та психологічну підтримку. План має бути індивідуальним.','health'],
+['Реабілітація','Адаптивний спорт','Як безпечно знайти адаптивні спортивні можливості.','Порадьтеся з лікарем щодо навантаження. Перевірте програми Мінветеранів, громад і спортивних організацій; уточніть доступність локації.','veteran'],
+['Реабілітація','Доступність громадського простору','Як повідомити про бар’єри та шукати доступні послуги.','Опишіть конкретну перешкоду й адресу без персональних даних. Зверніться до балансоутримувача або місцевої ради.','gov'],
+['Реабілітація','Догляд за допоміжним засобом','Базові питання щодо обслуговування протеза або іншого засобу.','Дотримуйтеся інструкції виробника й рекомендацій фахівця. Не ремонтуйте критичні вузли самостійно. Запишіть контакти сервісу.','social'],
+['Психологічна підтримка','Як звернутися до психолога','Перші кроки до безпечної та фахової психологічної підтримки.','Оберіть формат: очно, дистанційно чи через медзаклад. Запитайте про освіту, досвід роботи з травмою, конфіденційність і вартість.','veteran'],
+['Психологічна підтримка','Підтримка близької людини','Як бути поруч, не тиснучи й не знецінюючи переживання.','Слухайте без примусу до розмови. Запитуйте, яка допомога потрібна. Не вимагайте подробиць бойового досвіду. За тривалого погіршення запропонуйте фахову підтримку.','health'],
+['Психологічна підтримка','Сон і відновлення','Загальні звички, які можуть підтримати режим відпочинку.','Спробуйте стабільний час сну, спокійний вечірній ритуал і менше стимуляторів. Якщо безсоння триває або впливає на повсякденність, зверніться до лікаря.','health'],
+['Психологічна підтримка','Повернення до цивільного ритму','Як планувати адаптацію без завищених очікувань до себе.','Розбийте зміни на малі кроки, залишайте час на відпочинок, домовляйтеся з близькими про побутові ролі. Темп адаптації індивідуальний.','veteran'],
+['Психологічна підтримка','Розмова з дітьми про повернення','Як будувати зрозумілу та безпечну комунікацію з дітьми.','Пояснюйте зміни відповідно до віку, відповідайте просто, підтримуйте розпорядок. За тривалих змін поведінки зверніться до дитячого психолога.','social'],
+['Психологічна підтримка','Ознаки, що варто звернутися по допомогу','Коли зміни самопочуття потребують уваги фахівця.','Зверніть увагу на тривалу ізоляцію, порушення сну, сильну тривогу чи втрату інтересу. Це не діагноз. Обговоріть стан із фахівцем.','health'],
+['Психологічна підтримка','Підтримка під час кризового стану','Що може зробити близька людина до професійної допомоги.','Залишайтеся поруч, говоріть спокійно, допоможіть перейти у безпечне місце. За ризику самопошкодження чи загрози життю викликайте екстрену допомогу.','health'],
+['Психологічна підтримка','Групи взаємопідтримки','Як знайти спільноту та перевірити її безпечність.','Шукайте групи через перевірені ветеранські організації або громаду. Уточніть конфіденційність, модерацію та кваліфікацію ведучого.','veteran'],
+['Психологічна підтримка','Підтримка партнерських стосунків','Як домовлятися про побут, межі та час разом.','Оберіть спокійний час, використовуйте конкретні прохання та домовляйтеся про паузу. За потреби зверніться до сімейного фахівця.','social'],
+['Психологічна підтримка','Як обрати психолога','Запитання про кваліфікацію, методи та конфіденційність.','Уточніть освіту, методи, досвід, межі компетенції та правила конфіденційності. Ви можете змінити фахівця, якщо не відчуваєте безпеки.','health'],
+['Працевлаштування','План повернення до роботи','Як оцінити сильні сторони й обрати наступний крок.','Складіть перелік навичок зі служби та цивільного досвіду. Визначте бажані умови, обмеження й потреби в адаптації. Зверніться до кар’єрного радника.','jobs'],
+['Працевлаштування','Резюме з військовим досвідом','Як описати досвід зрозуміло для цивільного роботодавця.','Перекладіть досвід на компетенції: управління командою, логістика, планування, безпека, технічне обслуговування. Не розкривайте службову інформацію.','jobs'],
+['Працевлаштування','Підготовка до співбесіди','Як говорити про досвід, очікування та перехід у цивільну сферу.','Підготуйте приклади результатів, уточніть обов’язки й умови. Вирішіть, якою особистою інформацією готові ділитися.','jobs'],
+['Працевлаштування','Послуги служби зайнятості','Де перевірити програми для шукачів роботи.','Перегляньте сайт Державної служби зайнятості або зверніться до центру. Уточніть консультації, навчання, ваучери та програми роботодавців.','jobs'],
+['Працевлаштування','Адаптація робочого місця','Як обговорити розумні пристосування з роботодавцем.','Опишіть функціональну потребу та можливе рішення: графік, обладнання, доступність, перерви. Перевірте правові умови з фахівцем.','jobs'],
+['Працевлаштування','Пошук вакансій онлайн','Як користуватися державними та перевіреними платформами.','Почніть зі служби зайнятості та відомих платформ. Перевіряйте роботодавця, не сплачуйте за працевлаштування й не надсилайте документи завчасно.','jobs'],
+['Працевлаштування','Підприємництво як кар’єрний шлях','Як оцінити ідею самозайнятості до старту.','Перевірте попит, витрати, конкурентів, дозвільні вимоги й ризики. Скористайтеся консультаціями Дія.Бізнес.','business'],
+['Працевлаштування','Трудовий договір: що перевірити','Що важливо перед підписанням документів.','Уточніть посаду, оплату, графік, випробувальний строк, відпустки й умови припинення. Збережіть примірник договору.','gov'],
+['Працевлаштування','Професійна орієнтація','Як визначити напрям для використання попередніх навичок.','Оцініть інтереси, сильні сторони, бажаний формат роботи та доступність навчання. Обговоріть результати з кар’єрним радником.','jobs'],
+['Працевлаштування','Самопрезентація без зайвих подробиць','Як коротко розповісти про себе на професійній зустрічі.','Підготуйте коротку розповідь: роль, ключові навички, приклад результату та бажаний напрям. Особисту історію розкривайте лише за власним бажанням.','jobs'],
+['Освіта','Освітні можливості для ветеранів','Де перевіряти програми навчання та професійного розвитку.','Перегляньте пропозиції МОН, служби зайнятості, закладів освіти й організацій. Уточніть фінансування, вимоги, формат і документ після завершення.','education'],
+['Освіта','Професійне навчання через службу зайнятості','Як перевірити можливість навчання або перепідготовки.','Зверніться до центру зайнятості й уточніть доступні програми, критерії участі, перелік професій та порядок оплати навчання.','jobs'],
+['Освіта','Освітній ваучер: перевірка умов','Де знайти чинні критерії та процедуру отримання ваучера.','Перевірте правила на сайті служби зайнятості. Категорії учасників, спеціальності та фінансові межі можуть змінюватися.','jobs'],
+['Освіта','Вступ до закладу вищої освіти','Як знайти правила вступу для конкретного року.','Перегляньте правила прийому обраного закладу та матеріали МОН. Уточніть пільгові умови, конкурсні вимоги, строки й документи.','education'],
+['Освіта','Визнання попереднього навчання','Як дізнатися, чи можна зарахувати раніше здобуті результати.','Зверніться до закладу з документами про попереднє навчання. Уточніть процедуру визнання результатів та академічну різницю.','education'],
+['Освіта','Цифрові навички для роботи','Як обрати базовий курс цифрової грамотності.','Визначте мету: документи, пошта, таблиці, онлайн-співбесіди чи кібербезпека. Обирайте курс із практичними вправами.','education'],
+['Освіта','Мовні курси та сертифікація','Як знайти навчання з іноземної мови для кар’єри.','Порівняйте програму, рівень, навантаження та підтвердження результату. Перевірте, чи потрібен сертифікат конкретного зразка.','education'],
+['Освіта','Навчання для зміни професії','Як побудувати реалістичний план перекваліфікації.','Оберіть кілька професій, перевірте вакансії та вимоги. Поговоріть із представником галузі, оцініть тривалість і вартість навчання.','jobs'],
+['Освіта','Стипендії та гранти на навчання','Де перевіряти можливості фінансової підтримки навчання.','Шукайте оголошення на сайтах закладів освіти, органів влади та перевірених фондів. Уточнюйте дедлайни, критерії та звітність.','education'],
+['Освіта','Навчання протягом життя','Як підтримувати професійний розвиток після працевлаштування.','Складіть квартальну ціль, оберіть один курс або практичний проєкт і фіксуйте результат. Навчання має відповідати реальним завданням.','education'],
+['Житло','Житлові програми: де перевіряти умови','Офіційні джерела інформації про житлову підтримку.','Перевірте чинні програми на порталі Дія, сайтах профільних міністерств і місцевої ради. Згадка програми не підтверджує права на участь.','diia'],
+['Житло','Пільгове кредитування житла','Як з’ясувати відповідність критеріям конкретної програми.','Перевірте оператора, категорії учасників, вимоги до житла, першого внеску, платоспроможності та регіону. Попросіть актуальний розрахунок.','diia'],
+['Житло','Компенсація за належне житло','Як знайти офіційний порядок і перевірити свою категорію.','Зверніться до Мінветеранів або уповноваженого місцевого органу. Порядок, черговість, документи й фінансування залежать від категорії.','veteran'],
+['Житло','Оренда житла: безпечна угода','На що звернути увагу під час пошуку орендованого помешкання.','Перевірте право орендодавця, зафіксуйте стан майна, оплату й заставу. Укладіть письмовий договір і не переказуйте кошти до перевірки.','gov'],
+['Житло','Доступне житло для людини з інвалідністю','Як оцінити помешкання за потребами мобільності.','Перевірте маршрут, ліфт, ширину дверей, санвузол, пороги та евакуацію. За можливості проведіть оцінку з фахівцем з доступності.','veteran'],
+['Житло','Пошкоджене житло та компенсаційні механізми','Де перевірити процедури щодо пошкодженого або знищеного майна.','Використовуйте офіційний портал Дія та роз’яснення профільних органів. Зберігайте підтвердження повідомлень, але не публікуйте персональні дані.','diia'],
+['Житло','Житлова черга: уточнення статусу','Як дізнатися, чи ведеться облік і які документи потрібні.','Зверніться до органу місцевого самоврядування. Попросіть інформацію про дату взяття на облік, підставу та порядок оновлення відомостей.','gov'],
+['Житло','Комунальні послуги після переїзду','Практичний список дій під час зміни адреси.','Уточніть переоформлення договорів, показники лічильників, реєстрацію місця проживання за потреби та доступність послуг.','gov'],
+['Житло','Безпечний пошук житла онлайн','Як уникати шахрайства в оголошеннях.','Перевірте особу орендодавця та можливість огляду. Не надсилайте передоплату за неоглянуте житло без перевірки документів.','gov'],
+['Житло','Планування ремонту та адаптації','Як розставити пріоритети під час пристосування житла.','Почніть із безпеки та доступу до санвузла, кухні й спального місця. Отримайте кілька кошторисів і перевірте виконавців.','veteran'],
+['Сім’я','Підтримка родини під час адаптації','Як узгодити очікування та нові сімейні ролі.','Обговоріть побут, особистий простір, відпочинок і потреби кожного. Домовтеся про регулярні короткі розмови без звинувачень.','social'],
+['Сім’я','Допомога дітям у період змін','Як зберегти для дитини відчуття передбачуваності.','Підтримуйте режим, пояснюйте зміни простою мовою та залишайте час на спільні заняття. За стійких труднощів зверніться до фахівця.','social'],
+['Сім’я','Підтримка партнерки або партнера','Як не залишати близького з надмірним навантаженням.','Розподіліть побутові обов’язки, обговоріть межі та ресурси. Підтримка потрібна всій родині.','veteran'],
+['Сім’я','Догляд за близькою людиною','Як організувати допомогу без виснаження доглядальника.','Складіть список щоденних потреб, залучіть родичів, уточніть соціальні послуги громади та плануйте відпочинок доглядальника.','social'],
+['Сім’я','Соціальні послуги у громаді','Як знайти фахівця із соціальної роботи та місцеві послуги.','Зверніться до управління соцзахисту або центру соціальних послуг громади. Уточніть оцінювання потреб, доступні послуги й документи.','social'],
+['Сім’я','Підтримка родин загиблих Захисників','Де отримати офіційну інформацію про супровід і гарантії.','Зверніться до Мінветеранів, місцевого фахівця із супроводу та органу соцзахисту. Попросіть пояснити порядок для вашої ситуації.','veteran'],
+['Сім’я','Сімейний бюджет після повернення','Як спланувати перехідний період і спільні витрати.','Зафіксуйте регулярні доходи, обов’язкові витрати й резерв. Домовтеся про прозорий формат обговорення грошей без передачі доступів до рахунків.','social'],
+['Сім’я','Комунікація з близькими','Як говорити про складні теми з повагою до меж.','Питайте, чи людина готова говорити. Використовуйте конкретні прохання та домовляйтеся про паузу. Не вимагайте розповідати про досвід.','veteran'],
+['Сім’я','Пошук фахівця із супроводу ветеранів','Як знайти фахівця, який допомагає зорієнтуватися в послугах.','Перевірте інформацію Мінветеранів і місцевої ради. Уточніть територію роботи, графік, канали зв’язку та межі послуг.','veteran'],
+['Сім’я','Підтримка старших членів родини','Як врахувати потреби літніх батьків та інших родичів.','Оцініть доступність медичних і соціальних послуг, транспорт, побутову безпеку та регулярність контактів.','social'],
+['Власна справа','Гранти для ветеранів: перевірка програми','Де шукати чинні умови грантових програм для ветеранського бізнесу.','Перевірте оголошення на Дія та Дія.Бізнес. Звірте категорії учасників, умови співфінансування, строки й звітність на дату подання.','business'],
+['Власна справа','Бізнес-план: структура','Які розділи продумати до подання заявки чи старту.','Опишіть клієнта, проблему, продукт, конкурентів, канали продажів, витрати, доходи, команду та ризики. Перевіряйте припущення розмовами з клієнтами.','business'],
+['Власна справа','Реєстрація ФОП: офіційний маршрут','Де перевірити порядок державної реєстрації підприємця.','Перегляньте послуги порталу Дія та інформацію податкової. До реєстрації оберіть види діяльності й систему оподаткування після консультації.','diia'],
+['Власна справа','Податки для малого бізнесу','Як знайти актуальні правила оподаткування.','Перевірте інформацію ДПС і чинні норми. Ставки та критерії змінюються; не приймайте рішення за старими статтями.','gov'],
+['Власна справа','Перевірка попиту на продукт','Як недорого протестувати бізнес-ідею.','Поговоріть із потенційними клієнтами, створіть просту пропозицію, оцініть готовність платити та протестуйте малу партію.','business'],
+['Власна справа','Консультації Дія.Бізнес','Як знайти консультаційну підтримку підприємців.','Перевірте актуальні формати консультацій, центри підтримки та освітні програми на офіційному сайті Дія.Бізнес.','business'],
+['Власна справа','Фінансовий план підприємства','Як порахувати витрати, ціну та точку беззбитковості.','Розділіть постійні й змінні витрати, оцініть податки, зарплати та сезонність. Перевірте розрахунок у кількох сценаріях і залиште резерв.','business'],
+['Власна справа','Команда та найм працівників','Що врахувати перед створенням робочих місць.','Визначте функції, бюджет оплати, оформлення трудових відносин, охорону праці та адаптацію робочого місця. Перевірте вимоги програми.','business'],
+['Власна справа','Закупівлі та постачальники','Як зменшити ризик зриву поставок.','Порівняйте постачальників, перевірте юридичні дані, строки, гарантії та повернення. Фіксуйте домовленості письмово.','business'],
+['Власна справа','Звітність за грантом','Як організувати документи й підтвердження витрат.','До витрат перечитайте договір і правила програми. Зберігайте рахунки, акти, платіжні документи та звіти. За сумнівів зверніться до адміністратора.','business']
+];
+const MATERIALS=DATA.map((x,i)=>({id:'m'+(i+1),category:x[0],title:x[1],summary:x[2],steps:x[3],source:{name:SOURCES[x[4]][0],url:SOURCES[x[4]][1]}}));
+const KEY='veteranPomichnyk.v1',DEFAULT={tasks:[],favorites:[],budget:[],pins:[],theme:'light',fontScale:15};let state=load(),currentView='home',selectedCategory='',openedId=null,map=null,layer=null,pendingPin=null,addingPin=false;
+function load(){try{let x=JSON.parse(localStorage.getItem(KEY)||'null');return {...structuredClone(DEFAULT),...(x||{}),tasks:Array.isArray(x?.tasks)?x.tasks:[],favorites:Array.isArray(x?.favorites)?x.favorites:[],budget:Array.isArray(x?.budget)?x.budget:[],pins:Array.isArray(x?.pins)?x.pins:[]}}catch(e){return structuredClone(DEFAULT)}}
+function save(){try{localStorage.setItem(KEY,JSON.stringify(state));dashboard();return true}catch(e){toast('Не вдалося зберегти дані у браузері.',true);return false}}
+function uid(){return Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,8)}
+function esc(s){return String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function toast(msg,error=false){let n=document.createElement('div');n.className='toast'+(error?' error':'');n.textContent=msg;document.getElementById('toastArea').append(n);setTimeout(()=>n.remove(),3500)}
+function money(n){return new Intl.NumberFormat('uk-UA',{maximumFractionDigits:2}).format(n)+' ₴'}
+function dateText(s){if(!s)return '';let d=new Date(s+'T00:00:00');return isNaN(d)?'':d.toLocaleDateString('uk-UA')}
+function dashboard(){let done=state.tasks.filter(t=>t.done).length;document.getElementById('statMaterials').textContent=MATERIALS.length;document.getElementById('statTasks').textContent=state.tasks.length;document.getElementById('statDone').textContent=state.tasks.length?Math.round(done/state.tasks.length*100)+'%':'0%';document.getElementById('statSaved').textContent=state.favorites.length}
+const NAMES={home:'Головна',materials:'Матеріали',tasks:'Мій план справ',saved:'Збережене',budget:'Сімейний бюджет',map:'Карта установ',emergency:'Екстрена допомога',assistant:'Помічник',settings:'Налаштування',profile:'Мій профіль',community:'Чат військових'};
+function showView(name,cat=''){if(!NAMES[name])return;currentView=name;selectedCategory=cat;document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.id==='view-'+name));document.querySelectorAll('[data-view]').forEach(b=>b.classList.toggle('active',b.dataset.view===name&&(!b.dataset.category||b.dataset.category===cat)));document.getElementById('crumb').textContent=cat||NAMES[name];document.getElementById('sidebar').classList.remove('open');if(name==='materials'){document.getElementById('materialsTitle').textContent=cat||'Матеріали та послуги';document.getElementById('categoryFilter').value=cat;renderMaterials()}if(name==='tasks')renderTasks();if(name==='saved')renderSaved();if(name==='budget')renderBudget();if(name==='map')setTimeout(initMap,100);if(name==='home')renderHome()}
+document.addEventListener('click',e=>{let n=e.target.closest('[data-view]');if(n){showView(n.dataset.view,n.dataset.category||'');return}let g=e.target.closest('[data-go]');if(g){showView(g.dataset.go,g.dataset.category||'');return}let c=e.target.closest('[data-close]');if(c)document.getElementById(c.dataset.close).close()});
+document.getElementById('menuToggle').onclick=()=>document.getElementById('sidebar').classList.toggle('open');
+function applyTheme(t){let r=t==='system'?(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'):t;document.documentElement.dataset.theme=r;document.getElementById('themeToggle').textContent=r==='dark'?'☀':'☾';document.getElementById('themeSelect').value=t;state.theme=t;save()}
+document.getElementById('themeToggle').onclick=()=>applyTheme(document.documentElement.dataset.theme==='dark'?'light':'dark');document.getElementById('themeSelect').onchange=e=>applyTheme(e.target.value);document.getElementById('fontScale').onchange=e=>{state.fontScale=Number(e.target.value);document.body.style.fontSize=state.fontScale+'px';save()};
+document.getElementById('globalSearch').addEventListener('keydown',e=>{if(e.key==='Enter'&&e.target.value.trim()){showView('materials');document.getElementById('materialSearch').value=e.target.value.trim();renderMaterials()}});
+const catSelect=document.getElementById('categoryFilter');CATEGORIES.forEach(c=>{let o=document.createElement('option');o.value=c;o.textContent=c;catSelect.append(o)});
+function card(m){let saved=state.favorites.includes(m.id);return `<article class="material"><div class="meta"><span class="tag">${esc(m.category)}</span><button class="fav ${saved?'saved':''}" data-fav="${m.id}" aria-label="Зберегти">${saved?'★':'☆'}</button></div><h3>${esc(m.title)}</h3><p>${esc(m.summary)}</p><div class="materialfoot"><span class="small">Перевірте актуальність</span><button class="btn ghost smallbtn" data-detail="${m.id}">Детальніше →</button></div></article>`}
+function renderMaterials(){let q=document.getElementById('materialSearch').value.trim().toLocaleLowerCase('uk'),cat=catSelect.value,sort=document.getElementById('sortMaterials').value,saved=document.getElementById('savedFilter').value==='saved';let list=MATERIALS.filter(m=>(!cat||m.category===cat)&&(!selectedCategory||m.category===selectedCategory||cat)&&(!saved||state.favorites.includes(m.id))&&(!q||(m.title+' '+m.summary+' '+m.steps+' '+m.category).toLocaleLowerCase('uk').includes(q)));list.sort((a,b)=>sort==='category'?a.category.localeCompare(b.category,'uk')||a.title.localeCompare(b.title,'uk'):a.title.localeCompare(b.title,'uk'));document.getElementById('resultCount').textContent=`Знайдено: ${list.length} із ${MATERIALS.length}`;document.getElementById('materialGrid').innerHTML=list.length?list.map(card).join(''):'<div class="empty" style="grid-column:1/-1">За вашим запитом нічого не знайдено.</div>'}
+['materialSearch','categoryFilter','sortMaterials','savedFilter'].forEach(id=>document.getElementById(id).addEventListener(id==='materialSearch'?'input':'change',renderMaterials));
+function renderHome(){document.getElementById('homeMaterials').innerHTML=[MATERIALS[0],MATERIALS[10],MATERIALS[20]].map(card).join('')}
+function renderSaved(){let a=state.favorites.map(id=>MATERIALS.find(m=>m.id===id)).filter(Boolean);document.getElementById('savedGrid').innerHTML=a.length?a.map(card).join(''):'<div class="empty" style="grid-column:1/-1">Поки нічого не збережено. Натискайте зірочку на картках матеріалів.</div>'}
+function toggleFav(id){if(state.favorites.includes(id)){state.favorites=state.favorites.filter(x=>x!==id);toast('Матеріал прибрано з обраного')}else{state.favorites.push(id);toast('Матеріал збережено')}save();renderMaterials();renderSaved();renderHome();if(openedId===id)document.getElementById('dialogSaveBtn').textContent=state.favorites.includes(id)?'★ Збережено':'☆ Зберегти'}
+function openMaterial(id){let m=MATERIALS.find(x=>x.id===id);if(!m)return;openedId=id;document.getElementById('dialogCategory').textContent=m.category;document.getElementById('dialogTitle').textContent=m.title;document.getElementById('dialogBody').innerHTML=`<p>${esc(m.summary)}</p><h3>Що можна зробити</h3><p>${esc(m.steps)}</p><div class="notice blue"><strong>Джерело для перевірки</strong><a target="_blank" rel="noopener" href="${m.source.url}">${esc(m.source.name)} ↗</a><br><span class="small">Перевірте чинність умов і дату оновлення.</span></div><p class="small">Матеріал не підтверджує автоматичного права на послугу чи виплату.</p>`;document.getElementById('dialogSaveBtn').textContent=state.favorites.includes(id)?'★ Збережено':'☆ Зберегти';document.getElementById('materialDialog').showModal()}
+document.addEventListener('click',e=>{let f=e.target.closest('[data-fav]');if(f){toggleFav(f.dataset.fav);return}let d=e.target.closest('[data-detail]');if(d)openMaterial(d.dataset.detail)});document.getElementById('dialogSaveBtn').onclick=()=>openedId&&toggleFav(openedId);
+/* План справ */
+document.getElementById('addTaskBtn').onclick=()=>{document.getElementById('taskForm').reset();document.getElementById('taskDialog').showModal()};document.getElementById('taskForm').onsubmit=e=>{e.preventDefault();let title=document.getElementById('taskName').value.trim();if(!title)return;state.tasks.unshift({id:uid(),title,date:document.getElementById('taskDate').value,category:document.getElementById('taskCategory').value,details:document.getElementById('taskDetails').value.trim(),done:false});save();renderTasks();document.getElementById('taskDialog').close();toast('Завдання додано')};
+function taskHTML(t){return `<div class="task ${t.done?'done':''}"><input type="checkbox" data-task-toggle="${t.id}" ${t.done?'checked':''}><div class="taskmain"><div class="tasktitle">${esc(t.title)}</div><div class="taskmeta">${esc(t.category||'Інше')}${t.date?' · до '+dateText(t.date):''}${t.details?' · '+esc(t.details):''}</div></div><button class="iconbtn" data-task-delete="${t.id}">×</button></div>`}
+function renderTasks(){let a=state.tasks.filter(t=>!t.done),d=state.tasks.filter(t=>t.done),p=state.tasks.length?Math.round(d.length/state.tasks.length*100):0;document.getElementById('activeTasks').innerHTML=a.length?a.map(taskHTML).join(''):'<div class="empty">Активних завдань немає. Додайте перший крок.</div>';document.getElementById('doneTasks').innerHTML=d.length?d.map(taskHTML).join(''):'<div class="empty">Виконані завдання з’являться тут.</div>';document.getElementById('taskProgressLabel').textContent=p+'%';document.getElementById('taskProgressBar').style.width=p+'%';document.getElementById('taskProgressText').textContent=state.tasks.length?`${d.length} із ${state.tasks.length} завдань виконано`:'Поки немає завдань';document.getElementById('activeTaskCount').textContent=a.length;dashboard()}
+document.addEventListener('change',e=>{let c=e.target.closest('[data-task-toggle]');if(c){let t=state.tasks.find(x=>x.id===c.dataset.taskToggle);if(t){t.done=c.checked;save();renderTasks();toast(t.done?'Завдання виконано':'Повернуто до активних')}}});document.addEventListener('click',e=>{let d=e.target.closest('[data-task-delete]');if(d){state.tasks=state.tasks.filter(t=>t.id!==d.dataset.taskDelete);save();renderTasks();toast('Завдання видалено')}});document.getElementById('clearDoneBtn').onclick=()=>{let n=state.tasks.filter(t=>t.done).length;if(!n)return toast('Немає виконаних завдань');if(confirm(`Видалити ${n} виконаних завдань?`)){state.tasks=state.tasks.filter(t=>!t.done);save();renderTasks();toast('Виконані завдання очищено')}};
+/* Бюджет */
+document.getElementById('budgetDate').value=new Date().toISOString().slice(0,10);document.getElementById('budgetForm').onsubmit=e=>{e.preventDefault();let amount=Number(document.getElementById('budgetAmount').value);if(!Number.isFinite(amount)||amount<=0)return toast('Вкажіть коректну суму',true);state.budget.unshift({id:uid(),type:document.getElementById('budgetType').value,amount,category:document.getElementById('budgetCategory').value,date:document.getElementById('budgetDate').value,note:document.getElementById('budgetNote').value.trim()});save();renderBudget();e.target.reset();document.getElementById('budgetDate').value=new Date().toISOString().slice(0,10);toast('Операцію додано')};
+function renderBudget(){let inc=state.budget.filter(x=>x.type==='income').reduce((s,x)=>s+x.amount,0),out=state.budget.filter(x=>x.type==='expense').reduce((s,x)=>s+x.amount,0);document.getElementById('budgetIncome').textContent=money(inc);document.getElementById('budgetExpense').textContent=money(out);document.getElementById('budgetBalance').textContent=money(inc-out);document.getElementById('budgetRows').innerHTML=state.budget.length?state.budget.map(x=>`<tr><td>${dateText(x.date)}</td><td>${x.type==='income'?'Дохід':'Витрата'}</td><td>${esc(x.category)}${x.note?'<br><span class="small">'+esc(x.note)+'</span>':''}</td><td style="font-weight:800;color:${x.type==='income'?'var(--green)':'var(--red)'}">${x.type==='income'?'+':'−'}${money(x.amount)}</td><td><button class="btn ghost smallbtn" data-budget-delete="${x.id}">Видалити</button></td></tr>`).join(''):'<tr><td colspan="5" class="muted">Операцій ще немає.</td></tr>'}
+document.addEventListener('click',e=>{let b=e.target.closest('[data-budget-delete]');if(b){state.budget=state.budget.filter(x=>x.id!==b.dataset.budgetDelete);save();renderBudget();toast('Операцію видалено')}});document.getElementById('clearBudgetBtn').onclick=()=>{if(!state.budget.length)return toast('Список уже порожній');if(confirm('Видалити всі операції бюджету?')){state.budget=[];save();renderBudget();toast('Бюджет очищено')}};document.getElementById('printBudget').onclick=()=>print();
+/* Leaflet + OpenStreetMap: користувач сам створює позначки, каталог не вигадує адрес. */
+function initMap(){if(map)return;if(!window.L){document.getElementById('map').innerHTML='<div class="empty">Leaflet не завантажився. Перевірте інтернет.</div>';return}map=L.map('map').setView([49,31.4],6);L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png',{
+  subdomains:'abcd',maxZoom:20,maxNativeZoom:20,
+  attribution:'&copy; OpenStreetMap contributors &copy; CARTO',
+  crossOrigin:true,keepBuffer:3,updateWhenIdle:true
+}).addTo(map);
+map.on('tileerror',function(){const hint=document.getElementById('mapTileHint');if(hint)hint.hidden=false;});
+map.on('tileload',function(){const hint=document.getElementById('mapTileHint');if(hint)hint.hidden=true;});
+layer=L.layerGroup().addTo(map);map.on('click',e=>{if(!addingPin)return;pendingPin={lat:e.latlng.lat,lng:e.latlng.lng};document.getElementById('pinCoords').textContent=`${pendingPin.lat.toFixed(5)}, ${pendingPin.lng.toFixed(5)}`;document.getElementById('pinForm').reset();document.getElementById('pinDialog').showModal();addingPin=false;document.getElementById('addPinBtn').textContent='＋ Додати позначку'});renderPins();setTimeout(()=>map.invalidateSize(),120)}
+function renderPins(){if(layer){layer.clearLayers();state.pins.forEach(p=>L.marker([p.lat,p.lng]).addTo(layer).bindPopup(`<b>${esc(p.name)}</b><br>${esc(p.note||'Власна позначка')}`))}let box=document.getElementById('pinList');if(!box)return;document.getElementById('pinCount').textContent=state.pins.length;box.innerHTML=state.pins.length?state.pins.map(p=>`<div class="task"><div class="quickicon">⌖</div><div class="taskmain"><div class="tasktitle">${esc(p.name)}</div><div class="taskmeta">${esc(p.note||'')} · ${p.lat.toFixed(4)}, ${p.lng.toFixed(4)}</div></div><button class="btn ghost smallbtn" data-pin-show="${p.id}">На карті</button><button class="iconbtn" data-pin-delete="${p.id}">×</button></div>`).join(''):'<div class="empty">Ви ще не додали позначок.</div>'}
+document.getElementById('addPinBtn').onclick=()=>{if(!map){initMap();setTimeout(()=>{addingPin=true;toast('Натисніть на карті, щоб поставити позначку')},250);return}addingPin=!addingPin;document.getElementById('addPinBtn').textContent=addingPin?'Скасувати':'＋ Додати позначку';toast(addingPin?'Натисніть на карті, щоб поставити позначку':'Додавання скасовано')};document.getElementById('pinForm').onsubmit=e=>{e.preventDefault();if(!pendingPin)return;let name=document.getElementById('pinName').value.trim();if(!name)return;state.pins.push({id:uid(),name,note:document.getElementById('pinNote').value.trim(),...pendingPin});pendingPin=null;save();renderPins();document.getElementById('pinDialog').close();toast('Позначку збережено')};
+document.addEventListener('click',e=>{let s=e.target.closest('[data-pin-show]');if(s){let p=state.pins.find(x=>x.id===s.dataset.pinShow);if(p&&map){map.setView([p.lat,p.lng],15);layer.eachLayer(l=>{let z=l.getLatLng();if(z.lat===p.lat&&z.lng===p.lng)l.openPopup()})}}let d=e.target.closest('[data-pin-delete]');if(d){state.pins=state.pins.filter(p=>p.id!==d.dataset.pinDelete);save();renderPins();toast('Позначку видалено')}};
+async function findAddress(){let q=document.getElementById('mapSearch').value.trim();if(!q)return toast('Введіть адресу',true);try{let r=await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+encodeURIComponent(q),{headers:{'Accept-Language':'uk'}}),a=await r.json();if(!a.length)return toast('Адресу не знайдено',true);map.setView([+a[0].lat,+a[0].lon],14);L.popup().setLatLng([+a[0].lat,+a[0].lon]).setContent(esc(a[0].display_name)).openOn(map)}catch(e){toast('Не вдалося знайти адресу. Перевірте інтернет.',true)}}document.getElementById('mapFindBtn').onclick=()=>{if(!map)initMap();setTimeout(findAddress,180)};document.getElementById('mapSearch').onkeydown=e=>{if(e.key==='Enter')document.getElementById('mapFindBtn').click()};document.getElementById('locateBtn').onclick=()=>{if(!navigator.geolocation)return toast('Геолокація недоступна',true);navigator.geolocation.getCurrentPosition(p=>{if(!map)initMap();map.setView([p.coords.latitude,p.coords.longitude],14);L.circleMarker([p.coords.latitude,p.coords.longitude],{radius:8}).addTo(map).bindPopup('Ваше поточне місце').openPopup()},()=>toast('Не вдалося отримати геолокацію. Перевірте дозвіл браузера.',true),{timeout:10000})};
+/* Локальний FAQ-помічник */
+const FAQ=[['Як перевірити статус УБД?',['убд','статус','посвідч'],'Почніть із відповідального підрозділу та офіційного сайту Мінветеранів. Уточніть, чи внесені відомості до реєстру та який документ підтверджує статус у вашій ситуації.'],['Де перевірити виплати та пільги?',['виплат','пільг','грош','компенсац'],'Перевіряйте умови на сайтах Мінветеранів, Мінсоцполітики, ПФУ та громади. Уточніть категорію отримувача, підставу, документи й строки.'],['Як знайти медичну допомогу?',['мед','лікар','лікарн','направлен','ліки'],'Почніть із сімейного лікаря або закладу, який веде ваш випадок. Перевірте послуги НСЗУ/МОЗ. За невідкладного стану телефонуйте 103.'],['Де шукати протезування?',['протез','реабілітац','кріс','ортез'],'Обговоріть потреби з лікарем і реабілітаційною командою. Актуальний порядок перевіряйте на сайтах Мінсоцполітики та Мінветеранів.'],['Як знайти роботу?',['робот','ваканс','резюм','працевлашт'],'Почніть із Державної служби зайнятості: перевірте вакансії, консультації та навчання. Опишіть військовий досвід через цивільні навички без службових деталей.'],['Де шукати навчання?',['освіт','навчан','курс','ваучер','перекваліф'],'Перевіряйте пропозиції служби зайнятості, МОН, закладів освіти та Дія.Бізнес. Уточніть критерії, вартість, фінансування і тривалість.'],['Як знайти житлову програму?',['житл','квартир','іпотек','оренд'],'Перевірте чинні умови на порталі Дія, у Мінветеранів та місцевої ради. Критерії залежать від програми й категорії.'],['Як отримати психологічну підтримку?',['психолог','психіч','тривог','сон','стрес'],'Можна почати із сімейного лікаря, профільного медзакладу або перевіреної ветеранської організації. Запитайте про кваліфікацію й конфіденційність. За безпосереднього ризику життю телефонуйте 103.'],['Як зробити резервну копію?',['резерв','експорт','зберег','копію'],'Відкрийте «Налаштування й дані» та натисніть «Експортувати JSON». Файл містить завдання, обране, бюджет і власні позначки карти.']];
+FAQ.forEach(f=>{let b=document.createElement('button');b.className='btn ghost';b.style.justifyContent='flex-start';b.textContent=f[0];b.onclick=()=>ask(f[0]);document.getElementById('faqButtons').append(b)});function bubble(t,user=false){let n=document.createElement('div');n.className='bubble'+(user?' user':'');n.textContent=t;let l=document.getElementById('chatLog');l.append(n);l.scrollTop=l.scrollHeight}function answer(q){let s=q.toLocaleLowerCase('uk'),best=null,score=0;FAQ.forEach(f=>{let n=f[1].filter(k=>s.includes(k)).length;if(n>score){best=f;score=n}});if(best)return best[2]+'\n\nПеревірте актуальність на офіційному ресурсі. Я не бачу реєстрових даних і не можу підтвердити право на послугу.';let found=MATERIALS.filter(m=>(m.title+' '+m.summary+' '+m.category).toLocaleLowerCase('uk').split(/\s+/).some(w=>w.length>5&&s.includes(w))).slice(0,2);return found.length?'Можливо, допоможуть матеріали:\n'+found.map(m=>'• '+m.title+' — '+m.category).join('\n')+'\nВідкрийте розділ «Матеріали» для деталей.':'Поки не маю точної відповіді у локальній довідці. Уточніть тему: документи, виплати, медицина, реабілітація, психологічна підтримка, робота, освіта, житло чи власна справа. Для індивідуального рішення зверніться до відповідальної установи.'}function ask(q){bubble(q,true);bubble(answer(q))}document.getElementById('chatForm').onsubmit=e=>{e.preventDefault();let i=document.getElementById('chatInput'),q=i.value.trim();if(q){i.value='';ask(q)}};
+/* Резервне копіювання та імпорт */
+document.getElementById('exportBtn').onclick=()=>{let blob=new Blob([JSON.stringify({app:'ВетеранПомічник',version:1,exportedAt:new Date().toISOString(),data:state},null,2)],{type:'application/json'}),u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download='VeteranPomichnyk-backup-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(u);toast('Резервну копію підготовлено')};document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();document.getElementById('importFile').onchange=async e=>{let f=e.target.files[0];if(!f)return;try{if(f.size>2*1024*1024)throw Error('Файл завеликий (максимум 2 МБ)');let p=JSON.parse(await f.text()),d=p.data||p;if(!d||typeof d!=='object')throw Error('Невірний формат');['tasks','favorites','budget','pins'].forEach(k=>{if(d[k]!==undefined&&!Array.isArray(d[k]))throw Error('Некоректне поле '+k)});if(!confirm('Імпорт замінить поточні локальні дані. Продовжити?'))return;state={...structuredClone(DEFAULT),...d,tasks:d.tasks||[],favorites:(d.favorites||[]).filter(id=>MATERIALS.some(m=>m.id===id)),budget:d.budget||[],pins:d.pins||[]};save();renderTasks();renderBudget();renderSaved();renderMaterials();renderPins();applyTheme(state.theme||'light');document.body.style.fontSize=(state.fontScale||15)+'px';document.getElementById('fontScale').value=String(state.fontScale||15);toast('Дані імпортовано')}catch(err){toast('Помилка імпорту: '+err.message,true)}finally{e.target.value=''}};document.getElementById('resetBtn').onclick=()=>{if(!confirm('Видалити всі локальні завдання, обране, бюджет і позначки?'))return;state=structuredClone(DEFAULT);save();renderTasks();renderBudget();renderSaved();renderMaterials();renderPins();applyTheme('light');document.body.style.fontSize='15px';document.getElementById('fontScale').value='15';toast('Локальні дані скинуто')};
+/* Створення локальної чернетки звернення: дані форми не записуються в localStorage. */
+function documentDraft(){let recipient=document.getElementById('docRecipient').value.trim(),author=document.getElementById('docAuthor').value.trim(),subject=document.getElementById('docSubject').value.trim(),body=document.getElementById('docText').value.trim();return `${recipient||'До відповідної установи'}\n${author?'Від: '+author+'\n':''}\nЗВЕРНЕННЯ\n${subject?'Тема: '+subject+'\n\n':''}${body||'[Викладіть суть звернення та сформулюйте прохання]'}\n\nДата: ${new Date().toLocaleDateString('uk-UA')}\nПідпис: ____________________\n\nПримітка: перевірте адресата, фактичні дані, правові підстави та вимоги до подання перед використанням цього документа.`}
+document.getElementById('documentForm').onsubmit=e=>{e.preventDefault();let blob=new Blob([documentDraft()],{type:'text/plain;charset=utf-8'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='Chernetka-zvernennia.txt';a.click();URL.revokeObjectURL(url);toast('Чернетку звернення завантажено')};
+document.getElementById('previewDocBtn').onclick=()=>{let w=window.open('','_blank');if(!w)return toast('Дозвольте спливаюче вікно для перегляду документа.',true);w.document.write('<!doctype html><html lang="uk"><meta charset="utf-8"><title>Чернетка звернення</title><style>body{font:16px/1.65 Georgia,serif;max-width:800px;margin:45px auto;padding:0 25px;white-space:pre-wrap}button{padding:9px 14px;margin-bottom:22px}@media print{button{display:none}}</style><button onclick="window.print()">Друкувати</button><main></main></html>');w.document.querySelector('main').textContent=documentDraft();w.document.close()};
+/* Запуск */
+function init(){applyTheme(state.theme||'light');let size=Number(state.fontScale)||15;document.body.style.fontSize=size+'px';document.getElementById('fontScale').value=String(size);renderHome();renderMaterials();renderTasks();renderSaved();renderBudget();dashboard();document.getElementById('crumb').textContent='Головна'}init();document.addEventListener('keydown',e=>{if(e.key==='Escape')document.getElementById('sidebar').classList.remove('open')});
+
+// === ХМАРНИЙ ПРОФІЛЬ, ШИФРОВАНІ ДОКУМЕНТИ ТА СПІЛЬНИЙ ЧАТ ===
+const CLOUD_CFG='vp.cloud.config.v1';
+
+// Firebase integration for VeteranPomichnyk.
+// The Firebase web config is public client configuration, not a service-account secret.
+const firebaseConfig = {
+  apiKey: "AIzaSyCj_RHdFhcssfXiVujQ-4yOMiiJHOl3hFI",
+  authDomain: "veteranpomichnyk.firebaseapp.com",
+  databaseURL: "https://veteranpomichnyk-default-rtdb.firebaseio.com",
+  projectId: "veteranpomichnyk",
+  storageBucket: "veteranpomichnyk.firebasestorage.app",
+  messagingSenderId: "1016147843928",
+  appId: "1:1016147843928:web:02de7afb612832ec25232d",
+  measurementId: "G-QNRCG2ZDBN"
+};
+
+let cloud = {
+  app: null, auth: null, db: null, storage: null, user: null,
+  profile: {}, chatRef: null, chatHandler: null, docsCache: []
+};
+
+function setCloudStatus(t, ok=false) {
+  const e=document.getElementById('profileCloudStatus'); if(e)e.textContent=t;
+  const c=document.getElementById('chatConnection'); if(c)c.textContent=ok?'Підключено':'Немає з’єднання';
+  const d=document.getElementById('chatDot'); if(d)d.classList.toggle('online',ok);
+  const st=document.getElementById('chatStatusText'); if(st)st.textContent=t;
+}
+function setAuthStatus(t) { const e=document.getElementById('authStatus'); if(e)e.textContent=t; }
+function avatarFallback(name) { return (name||'В').trim().slice(0,1).toUpperCase()||'В'; }
+function renderAvatar(el,src,name) {
+  if(!el)return;
+  if(src){el.src=src;el.style.display='block';}
+  else{el.removeAttribute('src');el.style.display='grid';el.alt=avatarFallback(name);}
+}
+function profilePayload() {
+  return {
+    full_name:document.getElementById('pFullName').value.trim(),
+    age:document.getElementById('pAge').value ? Number(document.getElementById('pAge').value) : null,
+    status:document.getElementById('pStatus').value,
+    rank:document.getElementById('pRank').value.trim(),
+    brigade:document.getElementById('pBrigade').value.trim(),
+    phone:document.getElementById('pPhone').value.trim(),
+    city:document.getElementById('pCity').value.trim(),
+    bio:document.getElementById('pBio').value.trim(),
+    avatarUrl:cloud.profile.avatarUrl||'',
+    updatedAt:firebase.database.ServerValue.TIMESTAMP
+  };
+}
+function fillProfile(p) {
+  cloud.profile=p||{};
+  const map={pFullName:'full_name',pAge:'age',pStatus:'status',pRank:'rank',pBrigade:'brigade',pPhone:'phone',pCity:'city',pBio:'bio'};
+  for(const [id,k] of Object.entries(map)){
+    const e=document.getElementById(id);
+    if(e)e.value=p?.[k] ?? (id==='pStatus'?'Ветеран / ветеранка':'');
+  }
+  document.getElementById('profileDisplayName').textContent=p?.full_name||cloud.user?.email||'Ваш профіль';
+  document.getElementById('profileRoleLine').textContent=p?.status||'Особистий профіль';
+  renderAvatar(document.getElementById('profileAvatar'),p?.avatarUrl,p?.full_name||cloud.user?.email);
+}
+function showCloudArea(on) {
+  document.getElementById('profileAuth').hidden=on;
+  document.getElementById('profileArea').hidden=!on;
+  document.getElementById('chatLocked').hidden=on;
+  document.getElementById('communityArea').hidden=!on;
+}
+function friendlyAuthError(err) {
+  const code=err?.code||'';
+  const map={
+    'auth/email-already-in-use':'Ця електронна пошта вже зареєстрована. Спробуй увійти.',
+    'auth/invalid-email':'Перевір правильність електронної пошти.',
+    'auth/weak-password':'Пароль надто простий. Використай щонайменше 8 символів.',
+    'auth/user-not-found':'Акаунт із такою поштою не знайдено.',
+    'auth/wrong-password':'Неправильна пошта або пароль.',
+    'auth/invalid-credential':'Неправильна пошта або пароль.',
+    'auth/too-many-requests':'Забагато спроб. Спробуй пізніше.',
+    'auth/network-request-failed':'Немає з’єднання з інтернетом. Перевір мережу.',
+    'auth/operation-not-allowed':'У Firebase не ввімкнено Email/Password Authentication.'
+  };
+  return map[code]||err?.message||'Сталася помилка Firebase.';
+}
+async function registerCloud() {
+  const email=document.getElementById('authEmail').value.trim().toLowerCase();
+  const password=document.getElementById('authPassword').value;
+  const fullName=document.getElementById('authFullName').value.trim();
+  const nickname=document.getElementById('authNickname').value.trim();
+  if(!email||password.length<8||!fullName)throw Error('Вкажи email, пароль від 8 символів, ім’я та прізвище.');
+  const cred=await cloud.auth.createUserWithEmailAndPassword(email,password);
+  const profile={
+    full_name:fullName, nickname:nickname, email:email,
+    age:null,status:'Ветеран / ветеранка',rank:'',brigade:'',phone:'',city:'',bio:'',
+    avatarUrl:'',createdAt:firebase.database.ServerValue.TIMESTAMP,updatedAt:firebase.database.ServerValue.TIMESTAMP
+  };
+  await cloud.db.ref('profiles/'+cred.user.uid).set(profile);
+  await cred.user.updateProfile({displayName:fullName});
+  toast('Акаунт створено. Ласкаво просимо до ВетеранПомічник!');
+}
+async function loginCloud() {
+  const email=document.getElementById('authEmail').value.trim().toLowerCase();
+  const password=document.getElementById('authPassword').value;
+  if(!email||!password)throw Error('Введи електронну пошту та пароль.');
+  await cloud.auth.signInWithEmailAndPassword(email,password);
+}
+async function resetCloudPassword() {
+  const email=document.getElementById('authEmail').value.trim().toLowerCase();
+  if(!email)throw Error('Спочатку введи електронну пошту.');
+  await cloud.auth.sendPasswordResetEmail(email);
+  setAuthStatus('Лист для відновлення пароля надіслано. Перевір пошту та папку «Спам».');
+}
+async function loadCloudProfile() {
+  const snap=await cloud.db.ref('profiles/'+cloud.user.uid).once('value');
+  let p=snap.val();
+  if(!p){
+    p={full_name:cloud.user.displayName||'',email:cloud.user.email||'',status:'Ветеран / ветеранка',createdAt:firebase.database.ServerValue.TIMESTAMP};
+    await cloud.db.ref('profiles/'+cloud.user.uid).set(p);
+  }
+  fillProfile(p||{});
+  showCloudArea(true);
+  setCloudStatus('Акаунт Firebase підключено',true);
+  await loadSecureDocs();
+  attachCommunityListener();
+}
+async function saveCloudProfile() {
+  try {
+    if(!cloud.user)throw Error('Спочатку увійди в акаунт.');
+    const p=profilePayload();
+    await cloud.db.ref('profiles/'+cloud.user.uid).update(p);
+    cloud.profile={...cloud.profile,...p};
+    fillProfile(cloud.profile);
+    toast('Профіль збережено у Firebase.');
+  } catch(e) { toast(friendlyAuthError(e),true); }
+}
+async function logoutCloud() {
+  if(cloud.chatRef&&cloud.chatHandler)cloud.chatRef.off('value',cloud.chatHandler);
+  cloud.chatRef=null;cloud.chatHandler=null;
+  await cloud.auth.signOut();
+  toast('Ти вийшов з акаунта.');
+}
+function attachCommunityListener() {
+  if(!cloud.user)return;
+  if(cloud.chatRef&&cloud.chatHandler)cloud.chatRef.off('value',cloud.chatHandler);
+  cloud.chatRef=cloud.db.ref('chat_messages').limitToLast(100);
+  cloud.chatHandler=snap=>{
+    const log=document.getElementById('communityLog');
+    const nearBottom=log.scrollHeight-log.scrollTop-log.clientHeight<90;
+    log.innerHTML='';
+    const messages=[];
+    snap.forEach(child=>messages.push({id:child.key,...child.val()}));
+    if(!messages.length){log.innerHTML='<div class="empty">Поки немає повідомлень. Напиши перше привітання.</div>';return;}
+    messages.forEach(m=>{
+      const item=document.createElement('div');item.className='messageitem';
+      const av=document.createElement('div');av.className='messageavatar';av.textContent=avatarFallback(m.senderName);
+      const body=document.createElement('div');body.className='messagebody';
+      const b=document.createElement('b');b.textContent=m.senderName||'Учасник';
+      const small=document.createElement('small');small.textContent=' · '+new Date(m.timestamp||Date.now()).toLocaleString('uk-UA');
+      const p=document.createElement('p');p.textContent=m.text||'';
+      body.append(b,small,p);item.append(av,body);log.append(item);
+    });
+    if(nearBottom)log.scrollTop=log.scrollHeight;
+    setCloudStatus('Спільний чат синхронізовано',true);
+  };
+  cloud.chatRef.on('value',cloud.chatHandler,err=>{toast('Помилка чату: '+err.message,true);setCloudStatus('Помилка синхронізації',false);});
+}
+async function refreshCommunity() {
+  if(!cloud.user)return;
+  try{await cloud.db.ref('chat_messages').limitToLast(100).once('value');}
+  catch(e){toast('Не вдалося оновити чат: '+e.message,true);}
+}
+async function sendCommunityMessage(e) {
+  e.preventDefault();
+  const field=document.getElementById('communityMessage'),body=field.value.trim();
+  if(!body||!cloud.user)return;
+  if(/\b(позиці|координат|геолокац|маршрут|дислокац|номер підрозділ|склад боєприпас)/i.test(body)){
+    if(!confirm('Повідомлення може містити чутливі військові відомості. Не публікуй оперативну інформацію. Надіслати все одно?'))return;
+  }
+  try{
+    const name=cloud.profile.full_name||cloud.user.displayName||cloud.user.email;
+    await cloud.db.ref('chat_messages').push({
+      senderUid:cloud.user.uid,senderName:name,text:body.slice(0,1500),
+      timestamp:firebase.database.ServerValue.TIMESTAMP
+    });
+    field.value='';
+  }catch(err){toast('Не вдалося надіслати: '+err.message,true);}
+}
+async function uploadSecureDoc(e) {
+  e.preventDefault();
+  const f=document.getElementById('secureDocFile').files[0];
+  const label=document.getElementById('docLabel').value.trim();
+  if(!f||!label||!cloud.user)return;
+  const allowed=['application/pdf','image/jpeg','image/png','image/webp'];
+  if(!allowed.includes(f.type)||f.size>10*1024*1024){toast('Дозволено PDF/JPG/PNG/WebP до 10 МБ.',true);return;}
+  try{
+    const id=cloud.db.ref('profiles/'+cloud.user.uid+'/documents').push().key;
+    const safeName=f.name.replace(/[^a-zA-Z0-9._-]/g,'_').slice(0,100)||'document';
+    const path='users/'+cloud.user.uid+'/documents/'+id+'_'+safeName;
+    const ref=cloud.storage.ref(path);
+    await ref.put(f,{contentType:f.type,customMetadata:{ownerUid:cloud.user.uid}});
+    const meta={label:label,storagePath:path,contentType:f.type,size:f.size,originalName:f.name,createdAt:firebase.database.ServerValue.TIMESTAMP};
+    await cloud.db.ref('profiles/'+cloud.user.uid+'/documents/'+id).set(meta);
+    e.target.reset();await loadSecureDocs();toast('Документ збережено у приватному сховищі Firebase.');
+  }catch(err){toast('Не вдалося зберегти документ: '+friendlyAuthError(err),true);}
+}
+async function loadSecureDocs() {
+  if(!cloud.user)return;
+  try{
+    const snap=await cloud.db.ref('profiles/'+cloud.user.uid+'/documents').once('value');
+    const docs=snap.val()||{},box=document.getElementById('secureDocList');
+    box.innerHTML='';
+    const entries=Object.entries(docs);
+    if(!entries.length){box.innerHTML='<div class="empty">Документів поки немає.</div>';return;}
+    entries.sort((a,b)=>(b[1].createdAt||0)-(a[1].createdAt||0));
+    entries.forEach(([id,d])=>{
+      const row=document.createElement('div');row.className='docrow';
+      const left=document.createElement('div');
+      const title=document.createElement('b');title.textContent=d.label||'Документ';
+      const info=document.createElement('div');info.className='securehint';info.textContent='Приватний файл · '+new Date(d.createdAt||Date.now()).toLocaleDateString('uk-UA');
+      left.append(title,info);
+      const actions=document.createElement('div');actions.className='inlineactions';
+      const open=document.createElement('button');open.className='btn ghost smallbtn';open.textContent='Завантажити';
+      open.onclick=async()=>{
+        try{
+          const blob=await cloud.storage.ref(d.storagePath).getBlob();
+          const url=URL.createObjectURL(blob),a=document.createElement('a');
+          a.href=url;a.download=d.originalName||d.label||'document';a.click();
+          setTimeout(()=>URL.revokeObjectURL(url),15000);
+        }catch(err){toast('Не вдалося завантажити документ: '+err.message,true);}
+      };
+      const del=document.createElement('button');del.className='btn danger smallbtn';del.textContent='Видалити';
+      del.onclick=async()=>{
+        if(!confirm('Видалити цей документ без можливості відновлення?'))return;
+        try{
+          await cloud.storage.ref(d.storagePath).delete();
+          await cloud.db.ref('profiles/'+cloud.user.uid+'/documents/'+id).remove();
+          await loadSecureDocs();toast('Документ видалено.');
+        }catch(err){toast('Не вдалося видалити: '+err.message,true);}
+      };
+      actions.append(open,del);row.append(left,actions);box.append(row);
+    });
+  }catch(e){toast('Не вдалося отримати список документів: '+e.message,true);}
+}
+function setupCloudUI() {
+  try{
+    cloud.app=firebase.apps.length?firebase.app():firebase.initializeApp(firebaseConfig);
+    cloud.auth=firebase.auth();cloud.db=firebase.database();cloud.storage=firebase.storage();
+  }catch(e){console.error(e);setCloudStatus('Помилка запуску Firebase',false);setAuthStatus('Не вдалося ініціалізувати Firebase: '+e.message);return;}
+  document.getElementById('registerCloudBtn').onclick=async()=>{
+    try{setAuthStatus('Створюємо акаунт…');await registerCloud();}
+    catch(e){setAuthStatus(friendlyAuthError(e));toast(friendlyAuthError(e),true);}
+  };
+  document.getElementById('loginCloudBtn').onclick=async()=>{
+    try{setAuthStatus('Входимо…');await loginCloud();}
+    catch(e){setAuthStatus(friendlyAuthError(e));toast(friendlyAuthError(e),true);}
+  };
+  document.getElementById('resetPasswordBtn').onclick=async()=>{
+    try{await resetCloudPassword();}
+    catch(e){setAuthStatus(friendlyAuthError(e));toast(friendlyAuthError(e),true);}
+  };
+  document.getElementById('logoutCloudBtn').onclick=logoutCloud;
+  document.getElementById('saveProfileBtn').onclick=saveCloudProfile;
+  document.getElementById('secureDocForm').addEventListener('submit',uploadSecureDoc);
+  document.getElementById('communityCompose').addEventListener('submit',sendCommunityMessage);
+  document.getElementById('refreshChatBtn').onclick=refreshCommunity;
+  document.getElementById('communityRulesBtn').onclick=()=>alert('Правила: повага; жодної мови ворожнечі; не публікуйте оперативні дані, документи, персональні дані інших людей, погрози чи незаконний контент.');
+  document.getElementById('pAvatarFile').addEventListener('change',async e=>{
+    const f=e.target.files[0];if(!f)return;
+    if(!/^image\/(png|jpeg|webp)$/.test(f.type)||f.size>500000){toast('Оберіть JPG, PNG або WebP до 500 КБ.',true);return;}
+    try{
+      const img=new Image(),url=URL.createObjectURL(f);
+      img.onload=async()=>{
+        try{
+          const c=document.createElement('canvas'),scale=Math.min(1,480/Math.max(img.width,img.height));
+          c.width=Math.round(img.width*scale);c.height=Math.round(img.height*scale);
+          c.getContext('2d').drawImage(img,0,0,c.width,c.height);
+          const blob=await new Promise(resolve=>c.toBlob(resolve,'image/jpeg',.78));
+          const path='users/'+cloud.user.uid+'/avatar/profile.jpg';
+          await cloud.storage.ref(path).put(blob,{contentType:'image/jpeg'});
+          const avatarUrl=await cloud.storage.ref(path).getDownloadURL();
+          cloud.profile.avatarUrl=avatarUrl;
+          renderAvatar(document.getElementById('profileAvatar'),avatarUrl,cloud.profile.full_name);
+          URL.revokeObjectURL(url);
+          toast('Аватар оновлено. Натисни «Зберегти», щоб зберегти профіль.');
+        }catch(err){toast('Не вдалося завантажити аватар: '+err.message,true);}
+      };
+      img.onerror=()=>{URL.revokeObjectURL(url);toast('Не вдалося прочитати зображення.',true);};
+      img.src=url;
+    }catch(err){toast(err.message,true);}
+  });
+  document.getElementById('pFullName').addEventListener('change',()=>{
+    const n=document.getElementById('pFullName').value.trim();
+    document.getElementById('profileDisplayName').textContent=n||cloud.user?.email||'Ваш профіль';
+  });
+  cloud.auth.onAuthStateChanged(async user=>{
+    cloud.user=user||null;
+    if(user){
+      try{
+        await loadCloudProfile();
+        setAuthStatus('');
+      }catch(e){
+        setCloudStatus('Помилка завантаження профілю',false);
+        toast('Не вдалося завантажити профіль: '+e.message,true);
+      }
+    }else{
+      if(cloud.chatRef&&cloud.chatHandler)cloud.chatRef.off('value',cloud.chatHandler);
+      cloud.chatRef=null;cloud.chatHandler=null;cloud.profile={};
+      showCloudArea(false);setCloudStatus('Увійдіть у свій акаунт',false);
+      document.getElementById('communityLog').innerHTML='';
     }
+  });
+}
 
-    var userState = {
-        name: "Юшкевич Денис",
-        shortName: "Денисе",
-        brigade: "3 ОШБр",
-        status: "Ветеран ЗСУ",
-        phone: "+380 (99) 123-45-67",
-        email: "denys.yushkevych@gmail.com",
-        isLoggedIn: false,
-        userLat: 49.4444,
-        userLng: 32.0598
-    };
+// Firebase SDK вже підключений статичними script-тегами у <head>.
+if (window.firebase &&
+    typeof firebase.initializeApp === 'function' &&
+    typeof firebase.auth === 'function' &&
+    typeof firebase.database === 'function' &&
+    typeof firebase.storage === 'function') {
+  setupCloudUI();
+} else {
+  const message = 'Firebase SDK не завантажився. Перевірте доступ до gstatic.com та блокувальники скриптів.';
+  console.error(message);
+  setAuthStatus(message);
+  setCloudStatus('Немає зв’язку з Firebase SDK', false);
+}
 
-    var doctorsList = [
-        { 
-            id: 1, name: "Денис Кривопишин", spec: "Керівник майстерні протезування", center: "Superhumans Center", city: "Львів, вул. Галицька 142", price: "Безкоштовно", rating: "★ 5.0", lat: 49.8397, lng: 24.0297, url: "https://superhumans.com/",
-            reviews: [
-                { author: "Андрій (47 ОМБр)", text: "Найкращий спеціаліст! Встановили біонічний протез, рука працює чудово.", rating: 5, source: "Google Maps" },
-                { author: "Олег С.", text: "Професіонали своєї справи. Дуже вдячний всій команді Superhumans!", rating: 5, source: "Google Maps" }
-            ]
-        },
-        { 
-            id: 2, name: "Назар Багнюк", spec: "Керівник напрямку протезування", center: "UNBROKEN Center", city: "Львів, вул. Миколайчука 9", price: "Безкоштовно (НСЗУ)", rating: "★ 4.9", lat: 49.8500, lng: 24.0100, url: "https://unbroken.org.ua/",
-            reviews: [
-                { author: "Сергій В.", text: "Чудовий центр реабілітації, уважні лікарі, швидка підгонка кінетичних протезів.", rating: 5, source: "Google Maps" }
-            ]
-        },
-        { 
-            id: 3, name: "Яків Градінар", spec: "Головний протезист", center: "Protez Foundation", city: "Київ / США", price: "Безкоштовно", rating: "★ 5.0", lat: 50.4501, lng: 30.5234, url: "https://protezfoundation.org/",
-            reviews: [
-                { author: "Володимир", text: "Проходив підготовку та встановлення протезу нижньої кінцівки. Все на вищому рівні!", rating: 5, source: "Google Maps" }
-            ]
-        },
-        { 
-            id: 4, name: "Вадим Керестей", spec: "Лікар-реабілітолог", center: "Клініка 'Оберіг'", city: "Київ, вул. Зоологічна 3", price: "від 1100 грн", rating: "★ 4.8", lat: 50.4600, lng: 30.4500, url: "https://oberig.ua/",
-            reviews: [
-                { author: "Дмитро П.", text: "Дуже чуйний лікар. Розробив індивідуальну програму розробки суглобів.", rating: 5, source: "Google Maps" }
-            ]
-        },
-        { 
-            id: 5, name: "Олександр Коваленко", spec: "Протезист-ортопед", center: "Orto-Sana", city: "Черкаси, вул. Шевченка 205", price: "Безкоштовно", rating: "★ 4.9", lat: 49.4444, lng: 32.0598, url: "https://www.mspu.gov.ua/",
-            reviews: [
-                { author: "Тарас (Черкаси)", text: "Зручно що в рідному місті є такі фахівці. Швидке обслуговування.", rating: 5, source: "Google Maps" }
-            ]
-        },
-        { 
-            id: 6, name: "Ірина Мельник", spec: "Фізичний терапевт", center: "Центр реабілітації ветеранів", city: "Київ, вул. Госпітальна 18", price: "Безкоштовно", rating: "★ 4.7", lat: 50.4350, lng: 30.5350, url: "https://www.kmu.gov.ua/",
-            reviews: [
-                { author: "Ігор М.", text: "Добре розробляє м'язи після тривалого знерухомлення.", rating: 4, source: "Google Maps" }
-            ]
-        }
-    ];
 
-    var videoList = [
-        { id: 1, title: "Superhumans Center: сучасне протезування", rating: "★ 5.0", icon: "🦾", query: "Superhumans Center протезування" },
-        { id: 2, title: "UNBROKEN: центр реабілітації у Львові", rating: "★ 4.9", icon: "🏥", query: "UNBROKEN Львів реабілітація" },
-        { id: 3, title: "Історії ветеранів: повернення до життя", rating: "★ 4.9", icon: "⭐️", query: "історії ветеранів протезування реабілітація" },
-        { id: 4, title: "Protez Foundation: допомога захисникам", rating: "★ 4.9", icon: "🇺🇦", query: "Protez Foundation протезування українських військових" },
-        { id: 5, title: "Фізична терапія та відновлення після поранень", rating: "★ 4.8", icon: "🏋️", query: "фізична реабілітація військових вправи" },
-        { id: 6, title: "Психологічна підтримка та адаптація захисників", rating: "★ 4.8", icon: "🧠", query: "психологічна допомога ветеранам ЗСУ" }
-    ];
 
-    function openVideoSearch(query) {
-        var encoded = encodeURIComponent(query);
-        window.open('https://www.youtube.com/results?search_query=' + encoded, '_blank');
-    }
-
-    var activeProfileTab = 'card';
-    var leafletMapInstance = null;
-    var currentFilter = 'Усі';
-    var searchQuery = '';
-
-    function renderGoogleAuthScreen() {
-        document.getElementById('app-header').style.display = 'none';
-        document.getElementById('app-nav').style.display = 'none';
-
-        var content = document.getElementById('app-content');
-        content.className = 'content';
-        content.style.padding = '0';
-        content.innerHTML = `
-            <div class="google-page">
-                <div class="google-card-box">
-                    <div style="font-size: 24px; margin-bottom: 16px;">
-                        <span style="color:#4285F4">G</span><span style="color:#EA4335">o</span><span style="color:#FBBC05">o</span><span style="color:#4285F4">g</span><span style="color:#34A853">l</span><span style="color:#EA4335">e</span>
-                    </div>
-                    <div style="font-size: 24px; font-weight: 400; margin-bottom: 8px;">Увійдіть</div>
-                    <div style="font-size: 14px; color: #9aa0a6; margin-bottom: 24px;">Використовуйте свій захищений обліковий запис</div>
-
-                    <div class="google-input-group">
-                        <div style="font-size:12px; color:#8ab4f8; margin-bottom:6px;">Електронна адреса або телефон</div>
-                        <input type="text" id="google-email-input" value="denys.yushkevych@gmail.com">
-                    </div>
-
-                    <div style="font-size: 13px; color: #8ab4f8; cursor: pointer; margin-bottom: 30px;">
-                        Забули електронну адресу?
-                    </div>
-
-                    <div style="display: flex; justify-content: space-between; align-items: center;">
-                        <span style="font-size: 13px; color: #8ab4f8; cursor: pointer;" onclick="showRegistrationModal()">Створити профіль</span>
-                        <button class="google-btn-next" onclick="proceedToProfileSetup()">Далі</button>
-                    </div>
-                </div>
-                <div style="display: flex; justify-content: space-between; font-size: 12px; color: #9aa0a6; padding: 10px;">
-                    <span>Українська ▼</span>
-                    <span>Безпека · Конфіденційність · Умови</span>
-                </div>
-            </div>
-        `;
-    }
-
-    function proceedToProfileSetup() {
-        var emailVal = document.getElementById('google-email-input').value;
-        if (emailVal) userState.email = emailVal;
-        showRegistrationModal();
-    }
-
-    function showRegistrationModal() {
-        var modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.id = 'reg-modal';
-        modal.innerHTML = `
-            <div class="modal-card">
-                <div style="font-size:16px; font-weight:bold; margin-bottom:10px;">🛡️ Реєстрація у ВетеранПомічник</div>
-                <p style="font-size:11px; color:#94a3b8; margin-bottom:14px;">Вкажіть дані для захищеного профілю:</p>
-                
-                <label style="font-size:10px; color:#94a3b8;">ПІБ:</label>
-                <input type="text" id="reg-name" style="width:100%; padding:10px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:10px; font-size:12px;" value="${userState.name}">
-
-                <label style="font-size:10px; color:#94a3b8;">Бригада / Підрозділ:</label>
-                <input type="text" id="reg-brigade" style="width:100%; padding:10px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:10px; font-size:12px;" value="${userState.brigade}">
-
-                <label style="font-size:10px; color:#94a3b8;">Телефон:</label>
-                <input type="text" id="reg-phone" style="width:100%; padding:10px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:16px; font-size:12px;" value="${userState.phone}">
-
-                <button class="btn btn-primary" style="width:100%;" onclick="finishRegistration()">Увійти в систему</button>
-            </div>
-        `;
-        document.body.appendChild(modal);
-    }
-
-    function finishRegistration() {
-        var nameVal = document.getElementById('reg-name').value;
-        var brigadeVal = document.getElementById('reg-brigade').value;
-        var phoneVal = document.getElementById('reg-phone').value;
-
-        if (nameVal) {
-            userState.name = nameVal;
-            userState.shortName = nameVal.split(' ')[0];
-        }
-        if (brigadeVal) userState.brigade = brigadeVal;
-        if (phoneVal) userState.phone = phoneVal;
-        userState.status = "Ветеран ЗСУ (" + userState.brigade + ")";
-
-        var modal = document.getElementById('reg-modal');
-        if (modal) modal.remove();
-
-        userState.isLoggedIn = true;
-        document.getElementById('app-header').style.display = 'flex';
-        document.getElementById('app-nav').style.display = 'flex';
-        openScreen('home');
-    }
-
-    function resetNav() {
-        var items = document.querySelectorAll('.nav-item');
-        items.forEach(i => i.classList.remove('active'));
-    }
-
-    function openScreen(screenName) {
-        if (!userState.isLoggedIn) {
-            renderGoogleAuthScreen();
-            return;
-        }
-
-        resetNav();
-        var content = document.getElementById('app-content');
-        content.className = 'content';
-        content.style.padding = '16px';
-        var header = document.getElementById('app-header');
-
-        if (screenName === 'home') {
-            document.getElementById('nav-home').classList.add('active');
-            header.innerHTML = `<div><div style="font-size:10px; color:#94a3b8;">Вітаємо,</div><div>${userState.shortName}!</div></div><div class="header-icon" onclick="alert('Нових сповіщень немає')">🔔<div class="badge-dot"></div></div>`;
-            
-            content.innerHTML = `
-                <div style="font-size: 11px; color: #94a3b8; margin-bottom: 14px;">Статус: Система захищена ✅</div>
-                <div class="grid">
-                    <div class="tile" onclick="openScreen('prosthetics')">
-                        <div class="tile-icon">🦾</div>
-                        <div class="tile-title">ПРОТЕЗУВАННЯ</div>
-                    </div>
-                    <div class="tile" onclick="openScreen('doctors')">
-                        <div class="tile-icon">🩺</div>
-                        <div class="tile-title">ЗАПИС ДО ЛІКАРЯ</div>
-                    </div>
-                    <div class="tile" onclick="openScreen('map')">
-                        <div class="tile-icon">📍</div>
-                        <div class="tile-title">МАПА МЕДЦЕНТРІВ</div>
-                    </div>
-                    <div class="tile orange" onclick="alert('Екстрений виклик гарячої лінії SOS 1545 активовано!')">
-                        <div class="tile-icon">📞</div>
-                        <div class="tile-title">SOS / ГАРЯЧА ЛІНІЯ</div>
-                    </div>
-                </div>
-                <div class="card" style="margin-top: 16px;" onclick="openScreen('profile')">
-                    <div>
-                        <div style="font-size: 10px; color: #94a3b8;">Наступний прийом: 14:00</div>
-                        <div style="font-size: 13px; font-weight: bold;">Реабілітолог (Superhumans)</div>
-                    </div>
-                    <div>&gt;</div>
-                </div>
-            `;
-        }
-        else if (screenName === 'doctors') {
-            document.getElementById('nav-doctors').classList.add('active');
-            header.innerHTML = '<div>Запис до Лікарів</div><div></div>';
-            renderDoctorsContent(content);
-        }
-        else if (screenName === 'prosthetics') {
-            document.getElementById('nav-prosthetics').classList.add('active');
-            header.innerHTML = '<div>Інструкції та Протези</div><div></div>';
-
-            var cardsHtml = videoList.map(v => `
-                <div class="prosthetics-card" onclick="openVideoSearch('${v.query}')">
-                    <div class="prosthetics-thumb">
-                        ${v.icon}
-                        <div class="play-btn-overlay">▶</div>
-                    </div>
-                    <div class="prosthetics-info">
-                        <div class="prosthetics-title">${v.title}</div>
-                        <div class="prosthetics-rating">Дивитись на YouTube ${v.rating}</div>
-                    </div>
-                </div>
-            `).join('');
-
-            content.innerHTML = `
-                <div class="search-box">🔍 <input type="text" placeholder="Пошук інструкцій..." onkeyup="if(event.key==='Enter') alert('Пошуковий запит оброблено')"></div>
-                <div class="prosthetics-grid">${cardsHtml}</div>
-            `;
-        }
-        else if (screenName === 'chat') {
-            document.getElementById('nav-chat').classList.add('active');
-            header.innerHTML = '<div>Чат Ветеранів ЗСУ</div><div style="font-size:11px; color:#10b981;">● Online</div>';
-            initRealtimeChat(content);
-        }
-        else if (screenName === 'map') {
-            document.getElementById('nav-map').classList.add('active');
-            header.innerHTML = '<div>Мапа Медичних Закладів</div><div></div>';
-            content.className = 'content no-padding';
-            renderFullMapView(content);
-        }
-        else if (screenName === 'profile') {
-            document.getElementById('nav-profile').classList.add('active');
-            header.innerHTML = '<div>Мій Профіль</div><div onclick="showRegistrationModal()" style="cursor:pointer;">✏️</div>';
-
-            var tabContent = '';
-            if (activeProfileTab === 'info') {
-                tabContent = `
-                    <div class="card" style="flex-direction:column; align-items:flex-start; gap:8px; font-size:12px;">
-                        <div><b>ПІБ:</b> ${userState.name}</div>
-                        <div><b>Підрозділ:</b> ${userState.brigade}</div>
-                        <div><b>Статус:</b> ${userState.status}</div>
-                        <div><b>Телефон:</b> ${userState.phone}</div>
-                        <div><b>Google:</b> ${userState.email} (Автентифіковано ✅)</div>
-                    </div>
-                `;
-            } else if (activeProfileTab === 'card') {
-                tabContent = `
-                    <div class="card" onclick="window.open('https://superhumans.com/', '_blank')">
-                        <div><b>Запис на протезування</b><br><span style="font-size:11px; color:#38bdf8;">Superhumans Center ↗</span></div>
-                        <div>&gt;</div>
-                    </div>
-                    <div class="card" style="flex-direction:column; align-items:flex-start; margin-top:10px;">
-                        <div style="font-size:12px; font-weight:bold; margin-bottom:6px;">Призначені медикаменти</div>
-                        <div style="font-size:11px; color:#94a3b8; display:flex; justify-content:space-between; width:100%;">
-                            <span>Вітаміни B12 (Доза: 1 мл)</span><span>3 дн.</span>
-                        </div>
-                    </div>
-                `;
-            } else if (activeProfileTab === 'plan') {
-                tabContent = `
-                    <div class="card" style="flex-direction:column; align-items:flex-start; font-size:12px; gap:8px;">
-                        <b>План реабілітації на тиждень:</b>
-                        <div>1. Фізична терапія та розробка м'язів</div>
-                        <div>2. Налаштування біонічного вузла</div>
-                        <div>3. Щоденний комплекс вправ та відпочинок</div>
-                    </div>
-                `;
-            }
-
-            content.innerHTML = `
-                <div style="text-align: center; margin-bottom: 14px;">
-                    <div style="font-size: 42px;">👨‍✈️</div>
-                    <div style="font-size: 16px; font-weight: bold; margin-top: 4px;">${userState.name}</div>
-                    <div style="font-size: 12px; color: #38bdf8;">${userState.status}</div>
-                </div>
-
-                <div class="profile-tabs">
-                    <button class="profile-tab-btn ${activeProfileTab==='info'?'active':''}" onclick="activeProfileTab='info'; openScreen('profile');">ОСОБИСТІ ДАНІ</button>
-                    <button class="profile-tab-btn ${activeProfileTab==='card'?'active':''}" onclick="activeProfileTab='card'; openScreen('profile');">МЕД. КАРТКА</button>
-                    <button class="profile-tab-btn ${activeProfileTab==='plan'?'active':''}" onclick="activeProfileTab='plan'; openScreen('profile');">ПЛАН</button>
-                </div>
-                ${tabContent}
-            `;
-        }
-    }
-
-    /* ВІДГУКИ */
-    function openReviewsModal(docId) {
-        var doc = doctorsList.find(d => d.id === docId);
-        if (!doc) return;
-
-        if (db) {
-            db.ref('reviews/doc_' + docId).once('value', function(snapshot) {
-                var dbReviews = snapshot.val() || [];
-                var allReviews = (doc.reviews || []).concat(dbReviews);
-                showModalWithReviews(doc, allReviews);
-            }, function(error) {
-                showModalWithReviews(doc, doc.reviews || []);
-            });
-        } else {
-            showModalWithReviews(doc, doc.reviews || []);
-        }
-    }
-
-    function showModalWithReviews(doc, allReviews) {
-        var reviewsHtml = (allReviews.length > 0) ? allReviews.map(r => `
-            <div class="review-item">
-                <div class="review-header">
-                    <span>${r.author}</span>
-                    <span style="color:#f59e0b;">★ ${r.rating}.0 (${r.source || 'Додаток'})</span>
-                </div>
-                <div style="color:#cbd5e1;">${r.text}</div>
-            </div>
-        `).join('') : '<div style="font-size:11px; color:#94a3b8; text-align:center; margin:10px 0;">Відгуків поки немає. Будьте першим!</div>';
-
-        var modal = document.createElement('div');
-        modal.className = 'modal-overlay';
-        modal.id = 'reviews-modal';
-        modal.innerHTML = `
-            <div class="modal-card">
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <div style="font-size:14px; font-weight:bold;">Відгуки: ${doc.name}</div>
-                    <div style="cursor:pointer; font-size:16px;" onclick="document.getElementById('reviews-modal').remove()">✖</div>
-                </div>
-
-                <div style="margin-bottom:14px;" id="modal-reviews-list">${reviewsHtml}</div>
-
-                <div style="border-top:1px solid #283e72; padding-top:10px;">
-                    <div style="font-size:12px; font-weight:bold; margin-bottom:6px;">Залишити відгук:</div>
-                    <select id="new-review-rating" style="width:100%; padding:8px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:8px; font-size:11px;">
-                        <option value="5">★ ★ ★ ★ ★ (5.0 - Відмінно)</option>
-                        <option value="4">★ ★ ★ ★ ☆ (4.0 - Добре)</option>
-                        <option value="3">★ ★ ★ ☆ ☆ (3.0 - Задовільно)</option>
-                    </select>
-                    <textarea id="new-review-text" placeholder="Напишіть ваші враження..." style="width:100%; height:60px; padding:8px; background:#15274d; border:1px solid #283e72; color:white; border-radius:8px; margin-bottom:8px; font-size:11px; outline:none; resize:none;"></textarea>
-                    <button class="btn btn-primary" style="width:100%;" onclick="addNewReviewToFirebase(${doc.id})">Опублікувати відгук</button>
-                </div>
-            </div>
-        `;
-        document.body.appendChild(modal);
-    }
-
-    function addNewReviewToFirebase(docId) {
-        var text = document.getElementById('new-review-text').value.trim();
-        var rating = parseInt(document.getElementById('new-review-rating').value);
-
-        if (!text) {
-            alert('Будь ласка, введіть текст відгуку');
-            return;
-        }
-
-        var newRev = {
-            author: userState.name + " (" + userState.brigade + ")",
-            text: text,
-            rating: rating,
-            source: "ВетеранПомічник"
-        };
-
-        if (db) {
-            var ref = db.ref('reviews/doc_' + docId);
-            ref.once('value', function(snapshot) {
-                var list = snapshot.val() || [];
-                list.push(newRev);
-                ref.set(list, function(error) {
-                    if (!error) {
-                        document.getElementById('reviews-modal').remove();
-                        alert('Дякуємо! Ваш відгук збережено у хмарі.');
-                        openReviewsModal(docId);
-                    }
-                });
-            });
-        } else {
-            alert('Збережено локально.');
-            document.getElementById('reviews-modal').remove();
-        }
-    }
-
-    function renderDoctorsContent(contentElem) {
-        var filtered = doctorsList.filter(d => {
-            var matchText = (d.name + " " + d.center + " " + d.city + " " + d.spec).toLowerCase();
-            var qMatch = matchText.includes(searchQuery.toLowerCase());
-            if (currentFilter === 'Реабілітологи') return qMatch && (d.spec.toLowerCase().includes('реабіліт') || d.spec.toLowerCase().includes('терапевт') || d.spec.toLowerCase().includes('психолог'));
-            if (currentFilter === 'Протезисти') return qMatch && (d.spec.toLowerCase().includes('протез') || d.spec.toLowerCase().includes('ортопед') || d.spec.toLowerCase().includes('інженер'));
-            return qMatch;
-        });
-
-        var docsHtml = filtered.map(d => `
-            <div class="card" style="flex-direction:column; align-items:flex-start; gap:6px;">
-                <div style="display:flex; justify-content:space-between; width:100%; font-weight:bold; font-size:13px;">
-                    <span>${d.name}</span><span style="color:#f59e0b;">${d.rating}</span>
-                </div>
-                <div style="font-size:11px; color:#38bdf8;">${d.spec}</div>
-                <div style="font-size:11px; color:#94a3b8;">🏥 ${d.center} (${d.city})</div>
-                <div style="display:flex; justify-content:space-between; width:100%; margin-top:6px; align-items:center;">
-                    <button class="btn btn-secondary" onclick="openReviewsModal(${d.id})">💬 Відгуки</button>
-                    <button class="btn btn-primary" onclick="window.open('${d.url}', '_blank')">Записатись ↗</button>
-                </div>
-            </div>
-        `).join('');
-
-        contentElem.innerHTML = `
-            <div class="search-box">🔍 <input type="text" placeholder="Введіть місто або фах..." value="${searchQuery}" oninput="searchQuery=this.value; renderDoctorsContent(document.getElementById('app-content'));"></div>
-            <div class="filter-row">
-                <div class="filter-chip ${currentFilter==='Усі'?'active':''}" onclick="currentFilter='Усі'; renderDoctorsContent(document.getElementById('app-content'));">Усі (${doctorsList.length})</div>
-                <div class="filter-chip ${currentFilter==='Реабілітологи'?'active':''}" onclick="currentFilter='Реабілітологи'; renderDoctorsContent(document.getElementById('app-content'));">Реабілітологи</div>
-                <div class="filter-chip ${currentFilter==='Протезисти'?'active':''}" onclick="currentFilter='Протезисти'; renderDoctorsContent(document.getElementById('app-content'));">Протезисти</div>
-            </div>
-            <div style="font-size:12px; font-weight:bold; margin-bottom:8px;">Доступні спеціалісти (${filtered.length}):</div>
-            ${docsHtml}
-        `;
-    }
-
-    /* ЧАТ */
-    function initRealtimeChat(contentElem) {
-        contentElem.innerHTML = `
-            <div class="chat-container">
-                <div class="chat-messages" id="chat-msgs-box">
-                    <div style="text-align:center; color:#64748b; font-size:11px; margin-top:40px;">Завантаження чату...</div>
-                </div>
-                <div class="chat-input-area">
-                    <input type="text" id="chat-input" placeholder="Напишіть повідомлення побратимам..." onkeyup="if(event.key==='Enter') sendFirebaseMessage()">
-                    <button class="chat-send-btn" onclick="sendFirebaseMessage()">➤</button>
-                </div>
-            </div>
-        `;
-
-        if (db) {
-            var chatRef = db.ref('chat_messages');
-            chatRef.on('value', function(snapshot) {
-                var data = snapshot.val();
-                var msgBox = document.getElementById('chat-msgs-box');
-                if (!msgBox) return;
-
-                if (!data) {
-                    msgBox.innerHTML = '<div style="text-align:center; color:#64748b; font-size:11px; margin-top:40px;">Чат поки порожній.<br>Напишіть перше повідомлення побратимам!</div>';
-                    return;
-                }
-
-                var msgsArray = Object.values(data);
-                var msgsHtml = msgsArray.map(m => {
-                    var isMe = (m.sender && m.sender.indexOf(userState.shortName) !== -1);
-                    return `
-                        <div class="message-bubble ${isMe ? 'outgoing' : 'incoming'}">
-                            <div class="message-sender">${m.sender || 'Побратим'}</div>
-                            <div>${m.text}</div>
-                        </div>
-                    `;
-                }).join('');
-
-                msgBox.innerHTML = msgsHtml;
-                msgBox.scrollTop = msgBox.scrollHeight;
-            });
-        }
-    }
-
-    function sendFirebaseMessage() {
-        var input = document.getElementById('chat-input');
-        if (!input || !input.value.trim()) return;
-        var text = input.value.trim();
-
-        if (db) {
-            db.ref('chat_messages').push({
-                sender: userState.name + " (" + userState.brigade + ")",
-                text: text,
-                timestamp: Date.now()
-            });
-        }
-
-        input.value = '';
-    }
-
-    /* МАПА */
-    function renderFullMapView(contentElem) {
-        contentElem.innerHTML = `<div id="full-map-container"></div>`;
-
-        setTimeout(() => {
-            if (leafletMapInstance) leafletMapInstance.remove();
-            
-            leafletMapInstance = L.map('full-map-container').setView([userState.userLat, userState.userLng], 6);
-            
-            L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Street_Map/MapServer/tile/{z}/{y}/{x}', {
-                maxZoom: 18,
-                attribution: 'Tiles &copy; Esri'
-            }).addTo(leafletMapInstance);
-
-            doctorsList.forEach(d => {
-                L.marker([d.lat, d.lng]).addTo(leafletMapInstance)
-                    .bindPopup(`
-                        <div style="font-size:12px; color:#1e293b;">
-                            <b style="font-size:13px; color:#0f172a;">${d.center}</b><br>
-                            <b>Фахівець:</b> ${d.name} (${d.spec})<br>
-                            <b>Адреса:</b> ${d.city}<br><br>
-                            <a href="${d.url}" target="_blank" style="display:inline-block; padding:4px 8px; background:#2563eb; color:white; text-decoration:none; border-radius:4px; font-weight:bold;">Записатись ↗</a>
-                        </div>
-                    `);
-            });
-        }, 100);
-    }
-
-    window.onload = function() {
-        renderGoogleAuthScreen();
-    };
-</script>
-
-</body>
-</html>
+</script></body></html>
